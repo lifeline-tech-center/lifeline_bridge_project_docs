@@ -1,0 +1,185 @@
+<!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <link rel="stylesheet" href="/assets/css/just-the-docs-default.css"> <link rel="stylesheet" href="/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet"> <style id="jtd-nav-activation"> .site-nav ul li a { background-image: none; } </style> <script src="/assets/js/vendor/lunr.min.js"></script> <script src="/assets/js/just-the-docs.js"></script> <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Begin Jekyll SEO tag v2.8.0 --> <title>数据异常识别与处理模块（data_preprocessing） | 生命线平台技术文档</title> <meta name="generator" content="Jekyll v3.10.0" /> <meta property="og:title" content="数据异常识别与处理模块（data_preprocessing）" /> <meta property="og:locale" content="en_US" /> <meta name="description" content="城市生命线安全工程监测平台桥梁专项数据分析与预警模型" /> <meta property="og:description" content="城市生命线安全工程监测平台桥梁专项数据分析与预警模型" /> <meta property="og:site_name" content="生命线平台技术文档" /> <meta property="og:type" content="website" /> <meta name="twitter:card" content="summary" /> <meta property="twitter:title" content="数据异常识别与处理模块（data_preprocessing）" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"WebPage","description":"城市生命线安全工程监测平台桥梁专项数据分析与预警模型","headline":"数据异常识别与处理模块（data_preprocessing）","url":"/data_preprocessing/README.html"}</script> <!-- End Jekyll SEO tag --> </head> <body> <a class="skip-to-main" href="#main-content">Skip to main content</a> <svg xmlns="http://www.w3.org/2000/svg" class="d-none"> <symbol id="svg-link" viewBox="0 0 24 24"> <title>Link</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"> <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"> <title>Menu</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"> <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"> <title>Expand</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"> <polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE --> <symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"> <title id="svg-external-link-title">(external link)</title> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"> <title>Document</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"> <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"> <title>Search</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md --> <symbol id="svg-copy" viewBox="0 0 16 16"> <title>Copy</title> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16"> <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/> <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg> </symbol> <symbol id="svg-copied" viewBox="0 0 16 16"> <title>Copied</title> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16"> <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/> <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/> </svg> </symbol> </svg> <div class="side-bar"> <div class="site-header" role="banner"> <a href="/" class="site-title lh-tight"> 生命线平台技术文档 </a> <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false"> <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg> </button> </div> <nav aria-label="Main" id="site-nav" class="site-nav"> <ul class="nav-list"><li class="nav-list-item"><a href="/" class="nav-list-link">🏗️ 生命线平台-桥梁专项模型开发文档</a></li></ul> </nav> <footer class="site-footer"> This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll. </footer> </div> <div class="main" id="top"> <div id="main-header" class="main-header"> <div class="search" role="search"> <div class="search-input-wrap"> <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search 生命线平台技术文档" aria-label="Search 生命线平台技术文档" autocomplete="off"> <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label> </div> <div id="search-results" class="search-results"></div> </div> <nav aria-label="Auxiliary" class="aux-nav"> <ul class="aux-nav-list"> <li class="aux-nav-list-item"> <a href="https://github.com/lifeline_tech_center/lifeline_bridge_project_docs" class="site-button" > 项目主页 </a> </li> </ul> </nav> </div> <div class="main-content-wrap"> <nav aria-label="Breadcrumb" class="breadcrumb-nav"> <ol class="breadcrumb-nav-list"> <li class="breadcrumb-nav-list-item"><span>数据异常识别与处理模块（data_preprocessing）</span></li> </ol> </nav> <div id="main-content" class="main-content"> <main> <h1 id="-异常识别与处理"> <a href="#-异常识别与处理" class="anchor-heading" aria-labelledby="-异常识别与处理"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📊 异常识别与处理 </h1> <blockquote> <div class="table-wrapper"><table> <tbody> <tr> <td>城市生命线安全工程</td> <td>监测数据预处理</td> <td>异常数据识别</td> <td>滑动中位数与MAD 方法</td> <td>数据补全与可视化</td> </tr> </tbody> </table></div> </blockquote> <h2 id="-项目背景"> <a href="#-项目背景" class="anchor-heading" aria-labelledby="-项目背景"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📚 项目背景 </h2> <p>在桥梁结构健康监测系统中，采集到的温度、应变、位移等传感器数据可能由于设备漂移、环境扰动或通信故障出现突变或缺失，直接影响后续的数据建模与预警分析。</p> <p>为提升监测数据的可信度和稳定性，构建本模块用于<strong>自动识别异常点并进行数据清洗与补全</strong>，为城市桥梁生命线安全平台提供基础数据保障。</p> <h2 id="-模块简介"> <a href="#-模块简介" class="anchor-heading" aria-labelledby="-模块简介"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📌 模块简介 </h2> <p>本模块为<strong>城市生命线安全工程监测平台桥梁专项的数据分析子模块：异常识别与处理</strong>，支持<strong>单通道时间序列</strong>的异常点识别与自动补全，采用鲁棒滑动中位数与MAD的迭代方法，结合插值与前后填充方法进行数据补全，支持图像与终端表格输出。</p> <div class="table-wrapper"><table> <thead> <tr> <th>项目</th> <th>内容</th> </tr> </thead> <tbody> <tr> <td><strong>模块名称</strong></td> <td>data_preprocessing</td> </tr> <tr> <td><strong>核心功能</strong></td> <td>滑动中位数+MAD异常检测、数据插值补全、图表输出</td> </tr> <tr> <td><strong>典型应用</strong></td> <td>结构健康数据预处理、预警建模前清洗步骤、图形展示</td> </tr> <tr> <td><strong>作者</strong></td> <td>肖图刚</td> </tr> <tr> <td><strong>开发时间</strong></td> <td>2025‑06‑24</td> </tr> <tr> <td><strong>最后修改</strong></td> <td>2025‑06‑24（新增异常点表格输出与方法信息提示）</td> </tr> <tr> <td><strong>支持平台</strong></td> <td>城市生命线安全工程监测平台 / 地市级桥梁结构健康系统</td> </tr> </tbody> </table></div> <h2 id="-功能描述"> <a href="#-功能描述" class="anchor-heading" aria-labelledby="-功能描述"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🌟 功能描述 </h2> <p>✅ <strong>基于滑动中位数与MAD的鲁棒异常检测</strong>（多轮迭代剔除）</p> <p>✅ <strong>数据修复功能</strong>：插值 + 向前向后填充组合补全缺失</p> <p>✅ <strong>图像对比可视化</strong>：原始数据、清洗数据与异常点同图显示</p> <p>✅ <strong>终端表格输出异常点详情</strong>：含时间与数值，支持 tabulate 美化格式</p> <p>✅ <strong>支持中文输出与图例美化</strong>（内置中文字体设置）</p> <p>✅ <strong>模块化封装，便于外部调用与集成</strong></p> <h2 id="-输入数据说明"> <a href="#-输入数据说明" class="anchor-heading" aria-labelledby="-输入数据说明"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📂 输入数据说明 </h2> <ul> <li><strong>文件格式</strong>：CSV</li> <li><strong>时间列名</strong>：<code class="language-plaintext highlighter-rouge">time</code></li> <li><strong>数据列名</strong>：<code class="language-plaintext highlighter-rouge">value</code></li> </ul> <div class="table-wrapper"><table> <thead> <tr> <th>时间</th> <th>value</th> <th> </th> </tr> </thead> <tbody> <tr> <td>2025-06-01 00:00:00</td> <td>15.23</td> <td> </td> </tr> <tr> <td>2025-06-01 01:00:00</td> <td>15.27</td> <td> </td> </tr> <tr> <td>2025-06-01 02:00:00</td> <td>65.33</td> <td>← 异常点</td> </tr> </tbody> </table></div> <h2 id="️-运行环境与依赖"> <a href="#️-运行环境与依赖" class="anchor-heading" aria-labelledby="️-运行环境与依赖"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ⚙️ 运行环境与依赖 </h2> <ul> <li><strong>Python</strong> ≥ 3.9</li> </ul> <div class="table-wrapper"><table> <thead> <tr> <th>库</th> <th>版本要求</th> </tr> </thead> <tbody> <tr> <td>numpy</td> <td>≥ 2.0.2</td> </tr> <tr> <td>pandas</td> <td>≥ 2.2.3</td> </tr> <tr> <td>matplotlib</td> <td>≥ 3.9.0</td> </tr> <tr> <td>tabulate（可选）</td> <td>≥ 0.9.0</td> </tr> </tbody> </table></div> <p><strong>安装依赖</strong>：</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+</code></pre></div></div> <h2 id="️-使用说明"> <a href="#️-使用说明" class="anchor-heading" aria-labelledby="️-使用说明"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🛠️ 使用说明 </h2> <h3 id="安装模块"> <a href="#安装模块" class="anchor-heading" aria-labelledby="安装模块"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 安装模块 </h3> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-e</span> <span class="nb">.</span>
+</code></pre></div></div> <h3 id="快速运行示例"> <a href="#快速运行示例" class="anchor-heading" aria-labelledby="快速运行示例"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 快速运行示例 </h3> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python example.py
+</code></pre></div></div> <p>或在其他脚本中调用（example.py）：</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">data_preprocessing</span> <span class="kn">import</span> <span class="n">preprocess_series</span><span class="p">,</span> <span class="n">plot_comparison</span><span class="p">,</span> <span class="n">print_outliers</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">csv_path</span> <span class="o">=</span> <span class="s">"datasets/temp_ori_1week.csv"</span>
+    <span class="n">out_path</span> <span class="o">=</span> <span class="s">"figures/异常识别与处理曲线.png"</span>
+    <span class="n">out_csv</span> <span class="o">=</span> <span class="s">"output/预处理后的数据.csv"</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">"time"</span><span class="p">])</span>
+    <span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">"value"</span><span class="p">].</span><span class="n">values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+
+    <span class="n">cleaned</span><span class="p">,</span> <span class="n">outliers</span><span class="p">,</span> <span class="n">outlier_method_name</span><span class="p">,</span> <span class="n">fill_method_name</span> <span class="o">=</span> <span class="n">preprocess_series</span><span class="p">(</span>
+        <span class="n">series</span><span class="p">,</span> <span class="n">outlier_thresh</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">min_amplitude</span><span class="o">=</span><span class="mf">1.0</span>
+    <span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"📌 当前异常检测方法：</span><span class="si">{</span><span class="n">outlier_method_name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"📌 当前缺失数据补全方法：</span><span class="si">{</span><span class="n">fill_method_name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">plot_comparison</span><span class="p">(</span><span class="n">series</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">series</span><span class="p">,</span> <span class="n">cleaned</span><span class="p">,</span> <span class="n">outliers</span><span class="p">,</span> <span class="n">out_path</span><span class="o">=</span><span class="n">out_path</span><span class="p">)</span>
+    <span class="n">print_outliers</span><span class="p">(</span><span class="n">series</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">series</span><span class="p">,</span> <span class="n">outliers</span><span class="p">)</span>
+
+    <span class="n">Path</span><span class="p">(</span><span class="n">out_csv</span><span class="p">).</span><span class="n">parent</span><span class="p">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s">"时间"</span><span class="p">:</span> <span class="n">series</span><span class="p">.</span><span class="n">index</span><span class="p">,</span>
+        <span class="s">"原始值"</span><span class="p">:</span> <span class="n">series</span><span class="p">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="s">"清洗后值"</span><span class="p">:</span> <span class="n">cleaned</span><span class="p">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="s">"是否离群"</span><span class="p">:</span> <span class="n">outliers</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="p">}).</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_csv</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"✅ 清洗结果已保存至: </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">out_csv</span><span class="p">).</span><span class="n">resolve</span><span class="p">()</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</code></pre></div></div> <h2 id="-模块主要流程"> <a href="#-模块主要流程" class="anchor-heading" aria-labelledby="-模块主要流程"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🔢 模块主要流程 </h2> <ol> <li><strong>读取时间序列数据</strong>（CSV）</li> <li><strong>基于滑动中位数 + MAD 检测异常点</strong>（可设置滑窗大小、阈值）</li> <li><strong>多轮迭代清洗异常点并补全数据</strong>（插值 + 填充）</li> <li><strong>输出清洗前后对比图像</strong></li> <li><strong>打印异常点详细表格</strong></li> <li><strong>保存清洗结果到CSV</strong></li> </ol> <h2 id="-输出结果说明"> <a href="#-输出结果说明" class="anchor-heading" aria-labelledby="-输出结果说明"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📈 输出结果说明 </h2> <ul> <li><strong>清洗图像</strong>：位于 <code class="language-plaintext highlighter-rouge">figures/异常识别与处理曲线.png</code></li> <li><strong>清洗数据CSV</strong>：位于 <code class="language-plaintext highlighter-rouge">output/预处理后的数据.csv</code></li> <li><strong>终端输出</strong>：打印包含异常检测方法、补全方法说明、异常点表格</li> </ul> <p>示例表格输出：</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📌 当前异常检测方法：鲁棒滑动中位数+MAD迭代检测
+📌 当前缺失数据补全方法：时间插值 + bfill + ffill
+✅ 图像已保存至: D:<span class="se">\p</span>ycode<span class="se">\l</span>ifeline_bridge_alert<span class="se">\p</span>y_modu<span class="se">\d</span>ata_preprocessing<span class="se">\f</span>igures<span class="se">\异</span>常识别与处理曲线.png
+
+🛑 检测到的异常点数量：68 个
+📋 异常点详细信息如下：
++----------------------------+----------+
+| 时间                       |   异常值 |
++<span class="o">============================</span>+<span class="o">==========</span>+
+| 2024-04-01 00:01:59.666000 |      7.9 |
++----------------------------+----------+
+| 2024-04-01 00:03:47.571000 |      8.1 |
++----------------------------+----------+
+| 2024-04-01 00:05:27.705000 |      7.9 |
++----------------------------+----------+
+| 2024-04-01 02:38:50.455000 |      4.8 |
++----------------------------+----------+
+| 2024-04-01 03:04:50.745000 |      1.2 |
++----------------------------+----------+
+| 2024-04-01 03:05:02.012000 |     10.4 |
++----------------------------+----------+
+| 2024-04-01 03:05:05.317000 |      0.7 |
++----------------------------+----------+
+| 2024-04-01 03:17:37.660000 |      4.5 |
++----------------------------+----------+
+| 2024-04-01 03:17:39.881000 |      1.7 |
++----------------------------+----------+
+| 2024-04-01 03:35:43.352000 |      5.4 |
++----------------------------+----------+
+| 2024-04-01 04:10:26.580000 |      4.6 |
++----------------------------+----------+
+| 2024-04-01 04:13:50.868000 |     <span class="nt">-1</span>   |
++----------------------------+----------+
+| 2024-04-01 04:13:53.203000 |     <span class="nt">-1</span>   |
++----------------------------+----------+
+| 2024-04-01 04:13:56.524000 |      3.9 |
++----------------------------+----------+
+| 2024-04-01 04:14:02.571000 |      4.3 |
++----------------------------+----------+
+| 2024-04-01 04:18:35.679000 |      5.3 |
++----------------------------+----------+
+| 2024-04-01 04:39:06.037000 |      2.1 |
++----------------------------+----------+
+| 2024-04-01 04:56:22.928000 |      4.9 |
++----------------------------+----------+
+| 2024-04-01 05:04:08.940000 |      4.7 |
++----------------------------+----------+
+| 2024-04-01 05:04:19.305000 |      1.4 |
++----------------------------+----------+
+| 2024-04-01 05:07:01.647000 |     <span class="nt">-3</span>.4 |
++----------------------------+----------+
+| 2024-04-01 05:07:08.566000 |     <span class="nt">-3</span>.9 |
++----------------------------+----------+
+| 2024-04-01 05:07:12.069000 |     <span class="nt">-3</span>.4 |
++----------------------------+----------+
+| 2024-04-01 05:07:29.267000 |      5.9 |
++----------------------------+----------+
+| 2024-04-01 05:07:31.710000 |      1.7 |
++----------------------------+----------+
+| 2024-04-01 05:07:34.569000 |     <span class="nt">-4</span>.3 |
++----------------------------+----------+
+| 2024-04-01 05:10:16.307000 |      1.5 |
++----------------------------+----------+
+| 2024-04-01 05:11:59.141000 |      8.9 |
++----------------------------+----------+
+| 2024-04-01 05:15:12.899000 |      0.1 |
++----------------------------+----------+
+| 2024-04-01 05:32:41.679000 |      0.4 |
++----------------------------+----------+
+| 2024-04-01 05:35:13.926000 |      7.4 |
++----------------------------+----------+
+| 2024-04-01 05:35:29.621000 |     <span class="nt">-4</span>.7 |
++----------------------------+----------+
+| 2024-04-01 05:35:31.489000 |     <span class="nt">-4</span>.2 |
++----------------------------+----------+
+| 2024-04-01 05:41:47.965000 |      0.2 |
++----------------------------+----------+
+| 2024-04-01 05:56:23.782000 |      2.1 |
++----------------------------+----------+
+| 2024-04-01 05:56:27.029000 |      1.2 |
++----------------------------+----------+
+| 2024-04-01 05:58:51.962000 |     <span class="nt">-3</span>.2 |
++----------------------------+----------+
+| 2024-04-01 05:59:03.169000 |     10   |
++----------------------------+----------+
+| 2024-04-01 06:06:31.034000 |      0.3 |
++----------------------------+----------+
+| 2024-04-01 06:16:30.620000 |      0.7 |
++----------------------------+----------+
+| 2024-04-01 06:25:33.698000 |      4.2 |
++----------------------------+----------+
+| 2024-04-01 06:30:30.276000 |      0.8 |
++----------------------------+----------+
+| 2024-04-01 06:30:34.157000 |     <span class="nt">-2</span>.5 |
++----------------------------+----------+
+| 2024-04-01 06:49:35.503000 |     <span class="nt">-2</span>.2 |
++----------------------------+----------+
+| 2024-04-01 06:49:38.647000 |     <span class="nt">-2</span>.2 |
++----------------------------+----------+
+| 2024-04-01 06:49:57.899000 |      5.7 |
++----------------------------+----------+
+| 2024-04-01 06:57:24.128000 |     <span class="nt">-1</span>.5 |
++----------------------------+----------+
+| 2024-04-01 06:57:35.591000 |      3.6 |
++----------------------------+----------+
+| 2024-04-01 07:17:02.714000 |      0.9 |
++----------------------------+----------+
+| 2024-04-01 07:21:13.552000 |      1.3 |
++----------------------------+----------+
+| 2024-04-01 07:33:36.218000 |     <span class="nt">-1</span>.9 |
++----------------------------+----------+
+| 2024-04-01 07:35:35.549000 |      1.6 |
++----------------------------+----------+
+| 2024-04-01 07:57:37.147000 |     <span class="nt">-2</span>.3 |
++----------------------------+----------+
+| 2024-04-01 07:57:49.856000 |      1.8 |
++----------------------------+----------+
+| 2024-04-01 07:57:57.467000 |      5.6 |
++----------------------------+----------+
+| 2024-04-01 08:07:15.540000 |      4   |
++----------------------------+----------+
+| 2024-04-01 08:14:26.695000 |     <span class="nt">-0</span>.9 |
++----------------------------+----------+
+| 2024-04-01 08:14:45.982000 |      3.7 |
++----------------------------+----------+
+| 2024-04-01 08:14:47.771000 |     <span class="nt">-3</span>.7 |
++----------------------------+----------+
+| 2024-04-01 08:14:51.262000 |     <span class="nt">-2</span>.3 |
++----------------------------+----------+
+| 2024-04-01 08:15:14.566000 |      9.5 |
++----------------------------+----------+
+| 2024-04-01 08:15:17.393000 |     <span class="nt">-2</span>.7 |
++----------------------------+----------+
+| 2024-04-01 08:27:43.900000 |      1   |
++----------------------------+----------+
+| 2024-04-01 08:30:27.238000 |      2.6 |
++----------------------------+----------+
+| 2024-04-01 08:55:57.133000 |      2.7 |
++----------------------------+----------+
+| 2024-04-01 08:56:11.007000 |      2.7 |
++----------------------------+----------+
+| 2024-04-01 08:56:16.461000 |      3.1 |
++----------------------------+----------+
+| 2024-04-01 08:57:29.463000 |      2.7 |
++----------------------------+----------+
+✅ 清洗结果已保存至: D:<span class="se">\p</span>ycode<span class="se">\l</span>ifeline_bridge_alert<span class="se">\p</span>y_modu<span class="se">\d</span>ata_preprocessing<span class="se">\o</span>utput<span class="se">\预</span>处理后的数据.csv
+</code></pre></div></div> <p>示例输出图表： <img src="/data_preprocessing/figures/%E5%BC%82%E5%B8%B8%E8%AF%86%E5%88%AB%E4%B8%8E%E5%A4%84%E7%90%86%E6%9B%B2%E7%BA%BF.png" alt="异常识别与处理曲线" /></p> <h2 id="-拓展建议"> <a href="#-拓展建议" class="anchor-heading" aria-labelledby="-拓展建议"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🔁 拓展建议 </h2> <ol> <li><strong>支持生命线平台的在线数据流</strong></li> <li><strong>支持多通道批量清洗接口</strong>（多传感器并行）</li> <li><strong>支持滑动 GMM 异常检测与可自定义检测规则</strong></li> <li><strong>集成流式数据处理</strong>（用于边采边清洗的实时处理场景）</li> <li> <p><strong>拓展前端接口调用（如 Streamlit）</strong></p> <p><a href="/">返回首页</a></p> </li> </ol> </main> <hr> <footer> <div class="d-flex mt-2"> </div> </footer> </div> </div> <div class="search-overlay"></div> </div> </body> </html>

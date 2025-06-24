@@ -1,0 +1,175 @@
+<!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <link rel="stylesheet" href="/assets/css/just-the-docs-default.css"> <link rel="stylesheet" href="/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet"> <style id="jtd-nav-activation"> .site-nav ul li a { background-image: none; } </style> <script src="/assets/js/vendor/lunr.min.js"></script> <script src="/assets/js/just-the-docs.js"></script> <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Begin Jekyll SEO tag v2.8.0 --> <title>伸缩缝位移异常预警模块（joint_displacement_alert） | 生命线平台技术文档</title> <meta name="generator" content="Jekyll v3.10.0" /> <meta property="og:title" content="伸缩缝位移异常预警模块（joint_displacement_alert）" /> <meta property="og:locale" content="en_US" /> <meta name="description" content="城市生命线安全工程监测平台桥梁专项数据分析与预警模型" /> <meta property="og:description" content="城市生命线安全工程监测平台桥梁专项数据分析与预警模型" /> <meta property="og:site_name" content="生命线平台技术文档" /> <meta property="og:type" content="website" /> <meta name="twitter:card" content="summary" /> <meta property="twitter:title" content="伸缩缝位移异常预警模块（joint_displacement_alert）" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"WebPage","description":"城市生命线安全工程监测平台桥梁专项数据分析与预警模型","headline":"伸缩缝位移异常预警模块（joint_displacement_alert）","url":"/joint_displacement_alert/README.html"}</script> <!-- End Jekyll SEO tag --> </head> <body> <a class="skip-to-main" href="#main-content">Skip to main content</a> <svg xmlns="http://www.w3.org/2000/svg" class="d-none"> <symbol id="svg-link" viewBox="0 0 24 24"> <title>Link</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"> <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"> <title>Menu</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"> <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"> <title>Expand</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"> <polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE --> <symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"> <title id="svg-external-link-title">(external link)</title> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"> <title>Document</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"> <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"> <title>Search</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md --> <symbol id="svg-copy" viewBox="0 0 16 16"> <title>Copy</title> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16"> <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/> <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/> </svg> </symbol> <symbol id="svg-copied" viewBox="0 0 16 16"> <title>Copied</title> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16"> <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/> <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/> </svg> </symbol> </svg> <div class="side-bar"> <div class="site-header" role="banner"> <a href="/" class="site-title lh-tight"> 生命线平台技术文档 </a> <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false"> <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg> </button> </div> <nav aria-label="Main" id="site-nav" class="site-nav"> <ul class="nav-list"><li class="nav-list-item"><a href="/" class="nav-list-link">🏗️ 生命线平台-桥梁专项模型开发文档</a></li></ul> </nav> <footer class="site-footer"> This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll. </footer> </div> <div class="main" id="top"> <div id="main-header" class="main-header"> <div class="search" role="search"> <div class="search-input-wrap"> <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search 生命线平台技术文档" aria-label="Search 生命线平台技术文档" autocomplete="off"> <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label> </div> <div id="search-results" class="search-results"></div> </div> <nav aria-label="Auxiliary" class="aux-nav"> <ul class="aux-nav-list"> <li class="aux-nav-list-item"> <a href="https://github.com/lifeline_tech_center/lifeline_bridge_project_docs" class="site-button" > 项目主页 </a> </li> </ul> </nav> </div> <div class="main-content-wrap"> <nav aria-label="Breadcrumb" class="breadcrumb-nav"> <ol class="breadcrumb-nav-list"> <li class="breadcrumb-nav-list-item"><span>伸缩缝位移异常预警模块（joint_displacement_alert）</span></li> </ol> </nav> <div id="main-content" class="main-content"> <main> <h1 id="-伸缩缝位移异常预警模型"> <a href="#-伸缩缝位移异常预警模型" class="anchor-heading" aria-labelledby="-伸缩缝位移异常预警模型"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🌉 伸缩缝位移异常预警模型 </h1> <blockquote> <div class="table-wrapper"><table> <tbody> <tr> <td>城市生命线安全工程</td> <td>结构健康监测</td> <td>动态回归建模</td> <td>多级预警与可视化</td> </tr> </tbody> </table></div> </blockquote><hr /> <h2 id="-项目背景"> <a href="#-项目背景" class="anchor-heading" aria-labelledby="-项目背景"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📚 项目背景 </h2> <p>伸缩缝位移的异常变化是桥梁长期服役中常见的潜在病害。受环境温度等外部因素影响，伸缩缝位移会出现周期性波动。然而，若伸缩缝位移出现超出正常范围的异常波动，往往意味着结构局部受力状态改变或病害隐患，影响桥梁安全性与使用性能。</p> <p>本模块基于动态回归建模和阈值分析方法，结合温度修正与残差动态阈值计算，实现伸缩缝位移的异常趋势判别和多级预警。模块具备 <strong>趋势可视化、历史数据分析、多级预警判别</strong> 等功能，支持集成至省级城市生命线安全监测平台。</p><hr /> <h2 id="-模型简介"> <a href="#-模型简介" class="anchor-heading" aria-labelledby="-模型简介"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📌 模型简介 </h2> <p>本项目为 <strong>城市生命线安全工程监测平台桥梁预警体系核心子模块Ⅱ：伸缩缝位移异常预警模型</strong>，旨在识别伸缩缝在长期服役过程中的 <strong>异常位移波动及潜在的损伤问题</strong>。</p> <p>模块利用温度修正、基准预测（线性回归）与滑动残差动态阈值分析，动态判断伸缩缝位移的波动是否超出预警阈值，实现 <strong>正常、三级、二级、一级预警</strong> 的多级判别。支持历史数据离线分析及图形化展示，也可拓展为在线监测系统的子模块。</p> <ul> <li><strong>模块名称</strong>：<code class="language-plaintext highlighter-rouge">joint_displacement_alert</code></li> <li><strong>模型名称</strong>：伸缩缝位移异常预警模型</li> <li><strong>作者</strong>：肖图刚</li> <li><strong>开发时间</strong>：2025年4月27日</li> <li><strong>最后修改</strong>：2025年6月11日</li> </ul><hr /> <h2 id="-功能描述"> <a href="#-功能描述" class="anchor-heading" aria-labelledby="-功能描述"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 🌟 功能描述 </h2> <p>✅ 加载并预处理历史监测数据（时间戳对齐、缺失值处理、10分钟均值降采样等） ✅ 进行温度修正，计算平均温度特征，剔除环境温度影响 ✅ 建立位移预测基准模型（线性回归）并计算动态残差阈值 ✅ 滑动窗口实时判别异常位移点，分级预警（正常、三级、二级、一级） ✅ 输出各级异常点数量及对应的时间戳 ✅ 可视化动态趋势图、位移-温度关系及多级预警判别结果 ✅ 模块化设计，支持拓展集成到结构健康监测平台</p><hr /> <h2 id="-输入数据说明"> <a href="#-输入数据说明" class="anchor-heading" aria-labelledby="-输入数据说明"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📂 输入数据说明 </h2> <ul> <li><strong>格式</strong>：本地 CSV 文件（3列、无表头）</li> <li><strong>数据内容</strong>：1️⃣ 时间戳（如 <code class="language-plaintext highlighter-rouge">2024-05-22 11:00:00</code>）2️⃣ 伸缩缝位移（单位：mm）3️⃣ 多通道温度（单位：℃，可多传感器温度数据取平均）</li> <li><strong>数据来源</strong>：桥梁伸缩缝监测系统或附近温度测点数据（建议覆盖一年或更长周期）</li> <li><strong>采样频率</strong>：10分钟均值或1小时重采样，保障数据平稳性</li> <li><strong>特别说明</strong>：如位移传感器无温度监测能力，可引入附近监测点温度数据，做好对齐处理</li> </ul><hr /> <h2 id="-输出结果说明"> <a href="#-输出结果说明" class="anchor-heading" aria-labelledby="-输出结果说明"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 💾 输出结果说明 </h2> <ul> <li><strong>核心输出</strong>： <ul> <li>伸缩缝位移预测序列（基准模型）</li> <li>残差动态阈值曲线</li> <li>各级预警判别结果（含异常点数量和时间分布）</li> <li>关键时段的可视化趋势图（PNG）</li> </ul> </li> <li><strong>可拓展输出</strong>： <ul> <li>季度/年度位移增长率</li> <li>回归模型参数与残差分析</li> <li>潜在异常时间段提示，供运维管理参考</li> </ul> </li> </ul><hr /> <h2 id="️-运行环境与依赖"> <a href="#️-运行环境与依赖" class="anchor-heading" aria-labelledby="️-运行环境与依赖"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ⚙️ 运行环境与依赖 </h2> <ul> <li><strong>Python</strong>：≥ 3.9.16</li> <li><strong>依赖库</strong>： <ul> <li>pandas ≥ 2.2.3</li> <li>numpy ≥ 1.26.4</li> <li>matplotlib ≥ 3.9.4</li> <li>scikit-learn ≥ 1.5.2</li> <li>tabulate ≥ 0.9.0</li> </ul> </li> </ul> <blockquote> <p>📝 <strong>使用建议</strong></p> <ul> <li>适用于桥梁伸缩缝位移长期趋势分析与日常健康监测预警。</li> <li>建议定期更新数据，并结合结构检修计划进行综合分析。</li> <li>可与其他结构监测模块集成，提升整体健康监测智能化水平。</li> </ul> </blockquote> <ul> <li><strong>安装依赖：</strong></li> </ul> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+</code></pre></div></div> <h2 id="-代码示例"> <a href="#-代码示例" class="anchor-heading" aria-labelledby="-代码示例"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 💻 代码示例 </h2> <p>📁 安装模块：</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>py_modu/joint_displacement_alert
+pip <span class="nb">install</span> <span class="nb">.</span>
+</code></pre></div></div> <p>✅ 安装成功：</p> <div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">Successfully</span> <span class="s">installed</span> <span class="s">joint_displacement_alert-0.1.0</span>
+</code></pre></div></div> <p>⚙️ 运行示例：</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python example.py
+</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">example.py</code> 示例：</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">joint_displacement_alert</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_joint_data</span><span class="p">,</span> <span class="n">build_regression_model</span><span class="p">,</span>
+    <span class="n">detect_anomalies</span><span class="p">,</span> <span class="n">plot_joint_displacement</span><span class="p">,</span> <span class="n">print_alert_points</span>
+<span class="p">)</span>
+
+<span class="n">alert_sigma_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">filepath</span> <span class="o">=</span> <span class="s">'D:/pycode/lifeline_bridge_alert/wy-temp_10min_2.csv'</span>
+
+<span class="c1"># 先统一定义时间段参数
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="s">"2022-10-01"</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="s">"2022-10-07"</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_joint_data</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+<span class="n">df</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">build_regression_model</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">,</span> <span class="n">std_resid</span> <span class="o">=</span> <span class="n">detect_anomalies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">alert_sigma_mapping</span><span class="p">)</span>
+
+<span class="c1"># 打印预警点，传入时间段参数
+</span><span class="n">print_alert_points</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
+
+<span class="c1"># 绘图，传入时间段参数
+</span><span class="n">plot_joint_displacement</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">alert_sigma_mapping</span><span class="p">,</span>
+                        <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
+
+</code></pre></div></div><hr /> <h2 id="-输出示例"> <a href="#-输出示例" class="anchor-heading" aria-labelledby="-输出示例"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 📊 输出示例 </h2> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">训练数据总数：15944</span>
+<span class="s">2022-10-01~2022-10-07数据总数：865</span>
+
+<span class="s">===== 各级伸缩缝位移预警点 =====</span>
+
+<span class="s">一级预警:无异常点。</span>
+
+<span class="s">二级预警:无异常点。</span>
+
+<span class="s">三级预警:132个</span>
+<span class="s">+------------------+----------+</span>
+<span class="pi">|</span>       <span class="err">时间</span>       <span class="err">|</span> <span class="err">位移(mm)</span> <span class="err">|</span>
+<span class="err">+</span><span class="s">------------------+----------+</span>
+<span class="err">|</span><span class="s"> 2022-10-01 06:10 |  29.97   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 06:20 |  30.22   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 06:30 |  30.45   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 06:40 |  30.73   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 06:50 |  30.99   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 07:00 |  31.24   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 07:10 |  31.46   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 07:20 |  31.64   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 07:30 |  31.75   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 07:40 |  31.86   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 07:50 |  31.93   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 08:00 |  32.02   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 08:10 |  32.04   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 08:20 |  32.10   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 08:30 |  32.11   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 08:40 |  32.10   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 08:50 |  32.11   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 09:00 |  32.09   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 09:10 |  32.03   |</span>
+<span class="err">|</span><span class="s"> 2022-10-01 09:20 |  31.95   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 06:50 |  31.51   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 07:00 |  31.85   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 07:10 |  32.14   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 07:20 |  32.51   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 07:30 |  32.83   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 07:40 |  33.17   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 07:50 |  33.42   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 08:00 |  33.59   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 08:10 |  33.74   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 08:20 |  33.90   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 08:30 |  33.98   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 08:40 |  33.98   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 08:50 |  33.98   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 09:00 |  33.96   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 09:10 |  33.87   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 09:20 |  33.78   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 20:10 |  22.45   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 20:20 |  22.38   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 20:30 |  22.30   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 20:40 |  22.23   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 20:50 |  22.17   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 21:00 |  22.14   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 21:10 |  22.06   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 21:20 |  22.01   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 21:30 |  21.98   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 21:40 |  21.90   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 21:50 |  21.88   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 22:00 |  21.80   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 22:10 |  21.76   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 22:20 |  21.69   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 22:30 |  21.63   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 22:40 |  21.56   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 22:50 |  21.52   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 23:00 |  21.48   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 23:10 |  21.45   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 23:20 |  21.39   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 23:30 |  21.32   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 23:40 |  21.27   |</span>
+<span class="err">|</span><span class="s"> 2022-10-02 23:50 |  21.22   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 00:00 |  21.15   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 00:10 |  21.12   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 00:20 |  21.06   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 00:30 |  21.04   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 00:40 |  21.02   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 00:50 |  20.97   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 01:00 |  20.97   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 01:10 |  20.95   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 01:20 |  20.94   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 01:30 |  20.96   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 01:40 |  20.97   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 01:50 |  21.04   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 02:00 |  21.09   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 02:10 |  21.14   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 02:20 |  21.21   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 02:30 |  21.25   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 20:10 |  16.53   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 20:20 |  16.43   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 20:30 |  16.35   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 20:40 |  16.27   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 20:50 |  16.16   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 21:00 |  16.09   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 21:10 |  15.98   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 21:20 |  15.93   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 21:30 |  15.86   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 21:40 |  15.80   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 21:50 |  15.73   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 22:00 |  15.66   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 22:10 |  15.55   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 22:20 |  15.46   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 22:30 |  15.44   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 22:40 |  15.38   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 22:50 |  15.34   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 23:00 |  15.25   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 23:10 |  15.17   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 23:20 |  15.10   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 23:30 |  15.03   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 23:40 |  14.96   |</span>
+<span class="err">|</span><span class="s"> 2022-10-03 23:50 |  14.93   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 00:00 |  14.86   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 00:10 |  14.84   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 00:20 |  14.78   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 00:30 |  14.77   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 00:40 |  14.77   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 00:50 |  14.77   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 01:00 |  14.77   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 01:10 |  14.77   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 01:20 |  14.77   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 01:30 |  14.85   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 01:40 |  14.92   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 01:50 |  15.00   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 02:00 |  15.12   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 02:10 |  15.27   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 02:20 |  15.43   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 02:30 |  15.63   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 06:30 |  25.58   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 06:40 |  26.27   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 06:50 |  26.83   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 07:00 |  27.17   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 07:10 |  27.52   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 07:20 |  27.71   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 07:30 |  27.82   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 07:40 |  27.83   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 07:50 |  27.81   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 08:00 |  27.71   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 08:10 |  27.61   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 08:20 |  27.47   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 08:30 |  27.32   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 08:40 |  27.20   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 08:50 |  27.08   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 09:00 |  27.02   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 09:10 |  26.97   |</span>
+<span class="err">|</span><span class="s"> 2022-10-04 09:20 |  26.91   |</span>
+<span class="err">+</span><span class="s">------------------+----------+</span>
+</code></pre></div></div> <div class="table-wrapper"><table> <tbody> <tr> <td><img src="/joint_displacement_alert/figures/Figure_1.png" alt="伸缩缝位移趋势图" /></td> <td><a href="/">返回首页</a></td> </tr> </tbody> </table></div> </main> <hr> <footer> <div class="d-flex mt-2"> </div> </footer> </div> </div> <div class="search-overlay"></div> </div> </body> </html>

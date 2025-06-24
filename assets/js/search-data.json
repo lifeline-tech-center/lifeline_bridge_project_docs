@@ -1,0 +1,1073 @@
+{"0": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "🔗相关性分析模块",
+    "content": "| 城市生命线安全工程 | 结构健康监测 | 相关性建模 | 环境运营因素-结构响应分析 | . ",
+    "url": "/correlation_analysis/README.html#%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90%E6%A8%A1%E5%9D%97",
+    
+    "relUrl": "/correlation_analysis/README.html#相关性分析模块"
+  },"1": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "📚 项目背景",
+    "content": "桥梁结构在服役过程中受环境温度影响显著，尤其在多季节工况与温度梯度变化背景下，结构响应（如梁端位移、主梁应变和裂缝宽度等）与环境运营因素如（温度、湿度和车辆荷载）的相关性成为桥梁正常运行与健康评估的重要依据。比如梁端位移与温度关系通常呈现良好的线性响应，一旦脱离正常关联区间，可能表征支座阻滞、结构约束异常或构件变形积累等隐患。 . 传统方法依赖人工拟合或经验判断，难以动态更新与批量处理。为此，本模块面向城市生命线监测平台的批量桥梁数据分析需求，提供一个可插拔的温度-位移关系建模与可视化分析工具，支撑预警判断、异常检测与数据解释。 . ",
+    "url": "/correlation_analysis/README.html#%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/correlation_analysis/README.html#项目背景"
+  },"2": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "📌 模块简介",
+    "content": "该模块为 城市生命线监测平台桥梁专项分析子模块：相关性分析模型，核心功能为建立结构响应与环境运营因素之间的统计关系模型，并输出拟合图像与分析结果，辅助结构响应异常的工程解释和预警判断。 . | 模块名称：correlation_analysis | 主函数名称：core | 模型名称：相关性分析模型 | 作者：肖图刚 | 开发时间：2025年6月17日 | 最后修改：2025年6月17日 | . ",
+    "url": "/correlation_analysis/README.html#%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/correlation_analysis/README.html#模块简介"
+  },"3": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "🌟 功能描述",
+    "content": "✅ 多桥梁数据支持：支持批量分析多组桥梁结构响应-环境运营因素关系 ✅ 相关性拟合：可选线性拟合 / 二次拟合 / 三次拟合 ✅ 可视化分析图自动输出：自动绘制位移-温度关系图，展示拟合曲线与散点分布 ✅ 模型性能指标输出：输出 $R^2$、RMSE 等评价指标 ✅ 工程数据适配：自动跳过无效/空值数据，支持定制字段名 ✅ 模块化封装：便于集成入预警平台、边缘计算或 Web 可视化系统 . ",
+    "url": "/correlation_analysis/README.html#%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/correlation_analysis/README.html#功能描述"
+  },"4": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "📂 输入数据说明",
+    "content": ". | 输入格式：CSV 文件 | 字段要求： . | 第一列：时间戳（可跳过） | 第二列：结构响应（如位移） | 第三列：环境变量（如温度） | . | 默认字段解释： . | displacement：伸缩缝或梁端纵向位移值，单位 mm（或 μm） | temperature：环境温度或构件温度，单位 ℃ | . | . 📝 示例 CSV 文件： . timestamp, displacement, temperature 2023-04-01 00:00:00, 12.3, 25.6 2023-04-01 00:10:00, 12.8, 26.1 ... ⚙️ 运行环境与依赖 . | Python：≥ 3.9.16 | 依赖库： . | numpy ≥ 1.26.4 | pandas ≥ 2.2.2 | matplotlib ≥ 3.8.4 | scikit-learn ≥ 1.5.0 | . | . ",
+    "url": "/correlation_analysis/README.html#%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/correlation_analysis/README.html#输入数据说明"
+  },"5": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖： . pip install -r requirements.txt . 📁 安装模块： . cd py_modu/correlation_analysis pip install -e . ✅ 安装成功： . Successfully installed correlation_analysis-0.1.0 . ⚙️ 运行示例： . python example.py . 或在脚本中调用： . \"\"\"Minimal example showing how to use correlation_analysis.\"\"\" import pandas as pd from correlation_analysis import ( correlation_analysis, plot_correlation, plot_time_series_comparison, ) # 读取示例数据（使用时需替换为自己的 csv或在线数据） DATA_PATH = \"datasets/wy-temp_10min.csv\" df = pd.read_csv(DATA_PATH, index_col=0, parse_dates=True) disp_col = \"Wy07\" # 温度列示例：除了位移与其他非温度列外剩余全是温度 temp_cols = [c for c in df.columns if c not in [\"Wy07\", \"Wy10\"]] # 时间序列对比 plot_time_series_comparison(df, time_col=None, disp_col=disp_col, temp_cols=temp_cols) # 相关性分析 x_data, y_data, model = correlation_analysis(df, x_cols=temp_cols, y_col=disp_col) plot_correlation(x_data, y_data, model, x_name=\"温度\", y_name=\"伸缩缝位移\") . ",
+    "url": "/correlation_analysis/README.html#%EF%B8%8F%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/correlation_analysis/README.html#️快速使用说明"
+  },"6": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "🔢 主要流程",
+    "content": ". | 数据读取：加载CSV数据，解析温度与位移列 | 异常值剔除：自动跳过空值和非数值数据 | 关系建模：支持线性、一元二次和三次回归建模 | 评价指标计算：输出 R²、RMSE、残差分布 | 图像绘制与保存：生成结果图并自动保存 | . ",
+    "url": "/correlation_analysis/README.html#%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/correlation_analysis/README.html#主要流程"
+  },"7": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "💾 输出结果说明",
+    "content": "| 输出类型 | 内容说明 | 示例路径 | . | 拟合图像 (PNG) | 位移-温度散点与拟合曲线图 | figures/bridge01_fit_linear.png | . | 拟合指标 (CSV) | 拟合系数、R²、RMSE 等 | outputs/bridge01_fit_metrics.csv | . 图像说明： . | 横轴：温度 (℃) | 纵轴：位移 (mm) | 蓝点：原始监测数据 | 红线：拟合关系曲线 | 阴影带：残差范围 | . CSV 指标说明： . | 字段名 | 含义 | . | model | 使用的拟合类型（如 linear） | . | r2_score | 拟合决定系数 R² | . | rmse | 均方根误差 | . | coef_* | 回归系数（视模型复杂度而定） | . ",
+    "url": "/correlation_analysis/README.html#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/correlation_analysis/README.html#输出结果说明"
+  },"8": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "📷 示例图像展示",
+    "content": ". ",
+    "url": "/correlation_analysis/README.html#-%E7%A4%BA%E4%BE%8B%E5%9B%BE%E5%83%8F%E5%B1%95%E7%A4%BA",
+    
+    "relUrl": "/correlation_analysis/README.html#-示例图像展示"
+  },"9": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "🔁 后续优化建议",
+    "content": ". | 支持温度滞后影响建模（引入滑动平均或滞后项） | 支持结构响应拓展到应变挠度等其他响应，环境运营因素拓展到湿度和车辆荷载等 | 支持与生命线平台的在线数据接入和分析结果输出的交互 | 接入 Streamlit 或 Dash，部署图形化交互界面 | 引入异常检测模块，实现多级异常报警 . 返回首页 . | . ",
+    "url": "/correlation_analysis/README.html#-%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/correlation_analysis/README.html#-后续优化建议"
+  },"10": {
+    "doc": "相关性分析模块（correlation_analysis）",
+    "title": "相关性分析模块（correlation_analysis）",
+    "content": " ",
+    "url": "/correlation_analysis/README.html",
+    
+    "relUrl": "/correlation_analysis/README.html"
+  },"11": {
+    "doc": "主梁防倾覆预警模块（anti_overturning_alert）",
+    "title": "🔄 主梁防倾覆预警模块（开发中）",
+    "content": "该模块正在开发中，敬请期待。 . 返回首页 . ",
+    "url": "/anti_overturning_alert/README.html#-%E4%B8%BB%E6%A2%81%E9%98%B2%E5%80%BE%E8%A6%86%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E4%B8%AD",
+    
+    "relUrl": "/anti_overturning_alert/README.html#-主梁防倾覆预警模块开发中"
+  },"12": {
+    "doc": "主梁防倾覆预警模块（anti_overturning_alert）",
+    "title": "主梁防倾覆预警模块（anti_overturning_alert）",
+    "content": " ",
+    "url": "/anti_overturning_alert/README.html",
+    
+    "relUrl": "/anti_overturning_alert/README.html"
+  },"13": {
+    "doc": "超载预警模块（overload_alert）",
+    "title": "🚛 超载预警模块（开发中）",
+    "content": "该模块正在开发中，敬请期待。 . 返回首页 . ",
+    "url": "/overload_alert/README.html#-%E8%B6%85%E8%BD%BD%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E4%B8%AD",
+    
+    "relUrl": "/overload_alert/README.html#-超载预警模块开发中"
+  },"14": {
+    "doc": "超载预警模块（overload_alert）",
+    "title": "超载预警模块（overload_alert）",
+    "content": " ",
+    "url": "/overload_alert/README.html",
+    
+    "relUrl": "/overload_alert/README.html"
+  },"15": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "🌉 主梁持续下挠预警模型",
+    "content": "| 城市生命线安全工程 | 结构健康监测 | 趋势分析 | 预警可视化 | . ",
+    "url": "/progressive_deflection_alert/README.html#-%E4%B8%BB%E6%A2%81%E6%8C%81%E7%BB%AD%E4%B8%8B%E6%8C%A0%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-主梁持续下挠预警模型"
+  },"16": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "📚 项目背景",
+    "content": "主梁的持续下挠是桥梁长期运营中的常见结构性病害。尽管桥梁在荷载作用下的弹性变形是正常现象，但随着时间的推移，若挠度持续增加，往往意味着潜在的结构风险，影响桥梁安全。 . 本项目基于统计建模与趋势分析技术，对长期挠度监测数据进行温度修正、趋势拟合和多级预警判别。具备 历史数据分析、年增长率计算、可视化趋势图 等功能，支持集成至省级城市生命线平台。 . ",
+    "url": "/progressive_deflection_alert/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-项目背景"
+  },"17": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "📌 模型简介",
+    "content": "本项目为 ** 城市生命线安全工程监测平台桥梁预警体系核心子模块Ⅲ：主梁持续下挠预警模型，旨在识别桥梁主梁在长期服役过程中可能出现的 持续性挠度增长（下挠）问题。模块结合温度修正、趋势拟合（线性回归）和滑动分析等方法，动态判断主梁下挠趋势是否超出设定阈值，实现多级预警。支持离线历史数据分析和图形化展示，可拓展集成至桥梁结构健康监测系统。 . | 模块名称：progressive_deflection_alert | 模型名称：主梁持续下挠预警模型 | 作者：肖图刚 | 开发时间：2025年4月27日 | 最后修改：2025年5月27日 | . ",
+    "url": "/progressive_deflection_alert/README.html#-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-模型简介"
+  },"18": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "🌟 功能描述",
+    "content": "✅ 加载并预处理历史监测数据（时间戳对齐、缺失值处理、降采样等） ✅ 进行温度修正，剔除日周期性温度影响，获得真实结构下挠趋势 ✅ 滑动窗口回归，动态计算趋势变化率（挠度增速） ✅ 自动判断是否持续下挠，并进行多级预警（正常、三级、二级、一级） ✅ 统计各级异常点数量 ✅ 输出趋势图、预警判别图，直观展示挠度演变过程 ✅ 模块化设计，支持扩展集成到在线监控平台 . ",
+    "url": "/progressive_deflection_alert/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-功能描述"
+  },"19": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "📂 输入数据说明",
+    "content": ". | 格式：本地 CSV 文件（3列、无表头） | 数据内容： 1️⃣ 时间戳（如 2024-05-22 11:00:00，本地时间）2️⃣ 挠度数据（单位：mm）3️⃣ 温度数据（单位：℃） | 数据来源：犍为岷江大桥跨中截面同设备监测数据（2024-05-22 ~ 2025-05-22） | 采样频率：1 小时；若原始频率非 1 小时，需预先重采样 | 特别说明：如挠度监测设备无测温功能，可引入附近温度点位数据并对齐时间戳 | . ",
+    "url": "/progressive_deflection_alert/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-输入数据说明"
+  },"20": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "💾 输出结果说明",
+    "content": ". | 可视化图表（PNG）： . | 挠度变化趋势曲线 | 预警等级判别线 | 温度修正后的趋势曲线 | 各级预警阈值线 | . | 可扩展输出： . | 年度下挠值 | 预测趋势模型参数 | 关键时间点等信息 | . | . ",
+    "url": "/progressive_deflection_alert/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-输出结果说明"
+  },"21": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "⚙️ 开发环境与依赖",
+    "content": ". | Python：≥ 3.9.16 | 依赖库： . | pandas ≥ 2.2.3 | numpy ≥ 1.26.4 | matplotlib ≥ 3.9.4 | scikit-learn ≥ 1.5.2 | tabulate ≥ 0.9.0 | . | . 📝 使用建议 . | 适用于大跨度桥梁主梁的长期结构行为趋势预警。 | 建议定期更新监测数据，结合结构状态分析开展趋势预警。 | 可拓展为子系统接口，集成至实时监控平台。 | . | 建议在虚拟环境中安装： | . pip install -r requirements.txt . ",
+    "url": "/progressive_deflection_alert/README.html#%EF%B8%8F-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#️-开发环境与依赖"
+  },"22": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "💻 代码示例",
+    "content": "📁 安装依赖并导入模块： . cd py_modu/progressive_deflection_alert pip install . ✅ 成功安装： . Successfully installed progressive_deflection_alert-0.1.0 . ⚙️ 运行示例： . python example.py . example.py 示例： . from progressive_deflection_alert import load_deflection_data, DeflectionAnalyzer from progressive_deflection_alert.plotter import plot_deflection_trend, plot_monthly_growth csv_file = 'D:/pycode/lifeline_bridge_alert/datasets/def_temp_2y.csv' warning_thresholds = {\"Level 1\": 5.0, \"Level 2\": 3.0, \"Level 3\": 1.0} # 数据加载与预警分析 df = load_deflection_data(csv_file) analyzer = DeflectionAnalyzer(df, warning_thresholds) corrected = analyzer.perform_temperature_correction() growth, level = analyzer.estimate_annual_growth(corrected) plot_deflection_trend(df, corrected, level, growth) monthly_growth = analyzer.calculate_monthly_growth() plot_monthly_growth(monthly_growth) results = analyzer.analyze_annual_segments() for r in results: print(f\"周期: {r['周期']} | 年增长量: {float(r['年增长量']):.2f} | 预警等级: {r['预警等级']}\") . ",
+    "url": "/progressive_deflection_alert/README.html#-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-代码示例"
+  },"23": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "📊 输出示例",
+    "content": "周期: 2023-05-01 - 2024-05-01 | 年增长量: 4.62 | 预警等级: 二级(中等) 周期: 2024-05-01 - 2025-05-01 | 年增长量: 7.00 | 预警等级: 一级(严重) . | | | . | | | . ",
+    "url": "/progressive_deflection_alert/README.html#-%E8%BE%93%E5%87%BA%E7%A4%BA%E4%BE%8B",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-输出示例"
+  },"24": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "📦 平台要求",
+    "content": ". | 调用频率评估：待填（建议根据实际系统负载能力设定） | 性能：待填（包含响应时延、数据量上限） | 数据交互：请求与响应需使用 JSON 格式（如集成到平台） . 返回首页 . | . ",
+    "url": "/progressive_deflection_alert/README.html#-%E5%B9%B3%E5%8F%B0%E8%A6%81%E6%B1%82",
+    
+    "relUrl": "/progressive_deflection_alert/README.html#-平台要求"
+  },"25": {
+    "doc": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "title": "主梁持续下挠预警模块（progressive_deflection_alert）",
+    "content": " ",
+    "url": "/progressive_deflection_alert/README.html",
+    
+    "relUrl": "/progressive_deflection_alert/README.html"
+  },"26": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "🌀 自动模态频率识别模型",
+    "content": "| 城市生命线安全工程 | 结构健康监测 | 模态参数识别 | 自动化模态聚类与可视化 | . ",
+    "url": "/autossi/README.html#-%E8%87%AA%E5%8A%A8%E6%A8%A1%E6%80%81%E9%A2%91%E7%8E%87%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/autossi/README.html#-自动模态频率识别模型"
+  },"27": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "📚 项目背景",
+    "content": "桥梁、超高层和大型土木结构在服役期内会因材料老化、连接松弛、荷载变化和环境侵蚀等因素出现刚度退化。模态参数（模态频率、阻尼比、振型）是最灵敏的动力性能指标之一，当结构受损或受力路径改变时，模态频率往往率先发生可观测的下降或漂移。 . 传统模态识别常依赖商业软件或 MATLAB® Toolbox，难以与在线监测平台无缝集成。本模块基于 协方差驱动随机子空间辨识 (SSI‑COV) 方法，提供一条 从原始响应信号到稳定模态频率自动提取 的纯 Python 解决方案，可直接嵌入城市生命线监控平台，实现长期在线健康评估。 . ",
+    "url": "/autossi/README.html#%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/autossi/README.html#项目背景"
+  },"28": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "📌 模型简介",
+    "content": "该模块为 城市生命线监测平台桥梁数据分析的子模块：自动模态频率识别模型，同时也是预警体系核心子模块Ⅷ  ：模态频率预警模型的关键前置功能模块，通过 SSI‑COV 和稳定极点的聚类算法对实时监测的加速度（可更换为动位移）数据自动识别输出可靠的模态频率，为模态频率预警模型获取稳定的数据来源。 . | 模块名称：autossi | 主函数名称：autossi_main | 模型名称：自动模态频率识别模型 | 作者：肖图刚 | 开发时间：2025年6月10日 | 最后修改：2025年6月12日 | . ",
+    "url": "/autossi/README.html#%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/autossi/README.html#模型简介"
+  },"29": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "🌟 功能描述",
+    "content": "✅ NExT：自然激励技术自动提取脉冲响应函数 (IRF) ✅ Toeplitz + SVD：构造块 Toeplitz 矩阵并奇异值分解 ✅ 模态参数识别：自动输出频率、阻尼比、振型 ✅ 稳定性判别：多阶模型对比，标记稳定极点 ✅ 极点聚类：K‑Means 与潜力层次聚类双策略，筛选代表模态 ✅ 结构化输出：返回聚类频率及稳定性图绘制数据 ✅ 无 模态识别商业软件 依赖：纯 Python 实现，易于二次开发与集成 . ",
+    "url": "/autossi/README.html#%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/autossi/README.html#功能描述"
+  },"30": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "📂 输入数据说明",
+    "content": ". | 类型：二维 NumPy 数组 y，形状 [传感器数, 采样点数] | 采样间隔 dt：单位 (s) | 建议前处理：去均值、去趋势，必要时带通滤波 | . ",
+    "url": "/autossi/README.html#%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/autossi/README.html#输入数据说明"
+  },"31": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python：≥ 3.9.16 | 依赖库： . | numpy ≥ 1.26.4 | scipy ≥ 1.13.0 | scikit‑learn ≥ 1.5.2 | pandas ≥ 2.2.3 | . | . 📝 使用建议 . | 根据响应信号时长调节 Nmin / Nmax 及子段长度 Ts。 | 若频率密集，适当放宽稳定性容差 (eps_freq, eps_MAC) 以免漏检。 | . ",
+    "url": "/autossi/README.html#%EF%B8%8F%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/autossi/README.html#️运行环境与依赖"
+  },"32": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖 . pip install -r requirements.txt . 📁 安装模块： . cd py_modu/autossi pip install . ✅ 安装成功： . Successfully installed autossi-0.1.0 . ⚙️ 运行示例（example.py）： . import pandas as pd import numpy as np import argparse import matplotlib.pyplot as plt from autossi import autossi_main from autossi import plotStabDiag import os import time # 用于时间戳 from itertools import chain from sklearn.cluster import KMeans os.environ[\"LOKY_MAX_CPU_COUNT\"] = \"8\" # 你可以改成你的实际核心数 # 创建保存目录（如果不存在） output_dir = 'output' picture_dir = 'figures' os.makedirs(output_dir, exist_ok=True) os.makedirs(picture_dir, exist_ok=True) # 初始化 ------------------------------------- data_path = 'data/' for file_name in os.listdir(data_path): data = pd.read_csv(data_path + file_name) # 选择第4、5、7、8列的数据 selected_columns = data.iloc[:, [3, 4, 6, 7]] # 转置矩阵 rz = selected_columns.transpose().values dt = 0.02 # 时间步长 fs = 1 / dt # 采样频率 # 获取rz矩阵的行数和列数 Nyy是传感器数量， N是时间步数 Nyy, N = rz.shape # 应用SSI-COV方法 -------------------------------------- fn0, paraPlot = autossi_main(rz, dt, Ts=45, Nmin=5, Nmax=70) paraPlot = argparse.Namespace(**paraPlot) # 从文件名中去掉扩展名 base_name = os.path.splitext(file_name)[0] # 保存fn0到csv文件 csv_filename = f'output/idmodal_{base_name}.csv' fn0_df = pd.DataFrame(fn0).T fn0_df.to_csv(csv_filename, index=False) print(f\"fn0保存至文件: {csv_filename}\") # 绘制稳定性图 ------------------------------------------------ fig = plotStabDiag(paraPlot.fn, rz[0, :], fs, paraPlot.status, paraPlot.Nmin, paraPlot.Nmax) pic_filename = f'picture/stability_diag_{base_name}.png' fig.savefig(pic_filename) plt.close(fig) print(f\"稳定性图保存至文件: {pic_filename}\") . 详细参数请见主函数 autossi_main的技术文档 。 . ",
+    "url": "/autossi/README.html#%EF%B8%8F%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/autossi/README.html#️快速使用说明"
+  },"33": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "🔢 主要流程",
+    "content": ". | NExT → IRF 获取脉冲响应函数 | Toeplitz + SVD 提取系统阶次特征 | 逐阶模态识别 频率 / 阻尼 / 振型 | 稳定性对比 标注稳定极点 | 极点聚类 K‑Means + 层次聚类筛选代表模态 | 输出结果 返回频率 fn 及稳定性数据 info | . ",
+    "url": "/autossi/README.html#%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/autossi/README.html#主要流程"
+  },"34": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "💾 输出结果说明",
+    "content": "核心输出 . | 输出类型 | 说明 | 默认路径示例 | . | 模态频率 CSV | 代表性模态频率 fn0，文件名与原数据文件对应 | output/idmodal_7Z_1_2023-04-21_21_00.csv | . | 稳定性诊断图 | 模态稳定性图（阶数 × 频率散点图） | picture/stability_diag_7Z_1_2023-04-21_21_00.png | . 每处理完一段监测数据，程序会在终端提示保存的文件路径，示例： . fn0保存至文件: output/idmodal_7Z_1_2023-04-21_21_00.csv 稳定性图保存至文件: picture/stability_diag_7Z_1_2023-04-21_21_00.png . CSV 字段说明 . | 列名 | 含义 | . | cluster_fn | 聚类后代表性模态频率 (Hz) | . | median_zeta | 聚类内阻尼比中位数 | . | cluster_size | 聚类包含的极点数量 | . 稳定性图说明 . | 横轴：模型阶数 | 纵轴：模态频率 (Hz) | 颜色 / 标记：极点稳定性类别 | 作用：快速查看频率随阶数变化的稳定区，辨识真实模态 | . 模态频率识别结果(csv): . | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | . | 0.096796049 | 0.508367393 | 1.181561746 | 1.439088131 | 1.847654769 | 2.385378962 | 2.717038289 | 2.877676658 | 3.185031389 | 3.520934678 | . 🔎 说明： . | 当前模型以 离线实验数据 进行算法验证；后续将在城市生命线监测平台的在线实时数据上部署，实现频率实时识别、趋势跟踪及预警联动。 | . ",
+    "url": "/autossi/README.html#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/autossi/README.html#输出结果说明"
+  },"35": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "🔁 后续优化建议",
+    "content": ". | 集成自适应阈值，结合支座/裂缝模块实现多指标耦合预警 | 引入小波去噪、EMD 等前处理，提高低信噪比场景可靠性 | 开放 GPU 加速接口，支持大规模多桥梁群批量处理 | 与 Streamlit 或 Dash 结合，提供交互式在线稳定性图可视化 . 返回首页 . | . ",
+    "url": "/autossi/README.html#%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/autossi/README.html#后续优化建议"
+  },"36": {
+    "doc": "自动模态频率识别模块（autossi）",
+    "title": "自动模态频率识别模块（autossi）",
+    "content": " ",
+    "url": "/autossi/README.html",
+    
+    "relUrl": "/autossi/README.html"
+  },"37": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "⚡️ 加速度频谱分析模块 ",
+    "content": "| 城市生命线安全工程  |  加速度频谱分析  |  加速度滤波分析  | 多设备频谱分析 |  多时段对比与可视化 | . ",
+    "url": "/acc_spectral_analyse/README.html#%EF%B8%8F-%E5%8A%A0%E9%80%9F%E5%BA%A6%E9%A2%91%E8%B0%B1%E5%88%86%E6%9E%90%E6%A8%A1%E5%9D%97",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#️-加速度频谱分析模块"
+  },"38": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "📚 项目背景",
+    "content": "在桥梁、地铁区间、建筑物顶层等结构健康监测场景中，竖向加速度 是反映振动特征与载荷效应的首要指标。通过频域分析可以直观识别主振峰、谐振区及异常能量带，为模态频率预警、疲劳评估和运营限速提供数据支撑。 . 本模块以 快速傅里叶变换 (FFT) 为核心，可对单通道或多通道加速度数据进行频谱分析，并提供 Butterworth 带通滤波、多时段频谱对比 等功能，便于监测人员快速定位结构动力特征变化。 . ",
+    "url": "/acc_spectral_analyse/README.html#%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#项目背景"
+  },"39": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "📌 模块简介",
+    "content": "本模块为城市生命线安全工程监测平台桥梁专项-加速度数据分析的核心模块，包含单通道频谱分析、多时段频谱分析、多设备频谱分析和滤波分析四个关键功能。模块基于快速傅里叶变换（FFT）及 Butterworth 滤波器设计，支持对结构监测中的原始加速度数据进行自动化频谱提取和多时段振动特征对比，为结构模态识别、损伤定位和预警评估提供支撑。 . | 项目 | 内容 | . | 模块名称 | acc_spectral_analyse | . | 核心函数 | load_data, apply_bandpass_filter, plot_fft_comparison, compare_two_files | . | 作者 | 肖图刚 | . | 开发时间 | 2025‑06‑10 | . | 最后修改 | 2025‑06‑16（新增滤波功能与多时段对比功能，版本号升级至 v0.2.0） | . ",
+    "url": "/acc_spectral_analyse/README.html#%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#模块简介"
+  },"40": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "🌟 功能描述",
+    "content": "✅ 单/多通道 FFT：输出单边归一化幅值谱 ✅ 可选带通滤波：Butterworth 0.16 – 10 Hz（默认，可配置） ✅ 多时段频谱对比：一键对比同设备不同时段能量分布差异 ✅ 高分辨率可视化：时域‑频域双图，中文/英文双字体 ✅ 功率谱导出：FFT 结果可保存 CSV 便于二次分析 ✅ 模块化接口：易于集成至桥梁监控、城市生命线平台及后续开发 . ",
+    "url": "/acc_spectral_analyse/README.html#%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#功能描述"
+  },"41": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "📂 输入数据说明",
+    "content": ". | 文件格式：空格或制表符分隔纯文本 .txt / .dat | 列结构：time | ch1 | ch2 | … | chN（至少两列） | 采样频率 FS：示例 50 Hz，可在脚本中自定义 | 采样点数：默认截取 3000 点做示例，实际分析时可根据计算时间动态调整 | . ",
+    "url": "/acc_spectral_analyse/README.html#%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#输入数据说明"
+  },"42": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python ≥ 3.9.16 | 依赖库 . | numpy ≥ 2.2.4 | pandas ≥ 2.2.3 | matplotlib ≥ 3.10.3 | scipy ≥ 1.15.2 | . | . 📝 使用建议 . | 低频研究可适当下调 LOWCUT；若关注高阶模态，可上调 HIGHCUT。 | 多通道绘图时，避免一次性选过多通道导致图像过密，可分批绘制。 | . ",
+    "url": "/acc_spectral_analyse/README.html#%EF%B8%8F%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#️运行环境与依赖"
+  },"43": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖 . pip install -r requirements.txt . 📁 安装模块 . pip install -e . ✅ 安装成功后，可直接运行示例： . python example.py # 多通道 FFT 绘图 python example_filter.py # 单文件 滤波 + FFT 对比 python example_multi_time.py # 两时段单通道频谱对比 . 核心调用范式： . ### example.py \"\"\"示例脚本：读取数据 → 滤波 → FFT → 绘图\"\"\" from acc_spectral_analyse import load_data, apply_bandpass_filter, plot_fft_comparison # ============================================ # 参数设置 # ============================================ FILEPATH = \"datasets/2023-03-13_02_00_2min.txt\" # 加速度数据文件路径。文件应为以空格或制表符分隔的纯文本文件， # 第一列为时间戳，其余为多个加速度通道。 SAMPLE_POINTS = 3000 # 指定从文件中读取的采样点数。默认截取前3000点用于分析， # 主要用于控制处理数据的长度，避免全文件计算耗时过长。 FS = 50 # 数据采样频率（Hz）。表示每秒采样50次，是进行频谱分析和滤波设计的基础参数。 LOWCUT, HIGHCUT = 0.16, 10 # 带通滤波器的下限频率和上限频率（Hz）。 # 仅保留 0.16~10 Hz 范围内的信号成分，滤除其他频段的噪声或无关频率成分。 CHANNELS = [0, 3, 12] # 多通道分析 # CHANNELS = [12] # 单通道分析 # 选择分析和绘图的通道编号（从 0 开始）。 # 可为单个通道（如 [12]）或多个通道组合（如 [0, 3, 12]）。 # 实际对应原始数据文件的第 2、第 5、第 13 列加速度信号。 # ============================================ # 数据处理与可视化流程 # ============================================ # 读取原始加速度数据（时间戳 + 多通道信号） t, x_raw = load_data(FILEPATH, SAMPLE_POINTS) # 对多通道加速度数据应用 Butterworth 带通滤波器 x_filt = apply_bandpass_filter(x_raw, FS, LOWCUT, HIGHCUT) # 绘制选定通道的时域波形与单边幅值频谱对比图 plot_fft_comparison(t, x_raw, x_filt, FS, CHANNELS) . ",
+    "url": "/acc_spectral_analyse/README.html#%EF%B8%8F%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#️快速使用说明"
+  },"44": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "🔢 主要流程",
+    "content": ". | 读取数据 load_data（时间 + 多通道加速度） | 可选带通滤波 apply_bandpass_filter | FFT 变换 内部 _compute_fft 生成单边幅值谱 | 结果可视化 plot_fft_comparison 时域‑频域双图 | 多时段对比 compare_two_files 一键绘制两曲线差异 | . ",
+    "url": "/acc_spectral_analyse/README.html#%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#主要流程"
+  },"45": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "💾 输出结果说明",
+    "content": "| 类型 | 说明 | 示例文件 | . | 频谱图 PNG | 单/多通道单文件 FFT 对比 | figures/ch1_fft_2023‑03‑13.png | . | 多时段频谱对比 PNG | 同设备两时段单通道幅值谱对比 | figures/compare_03‑13_vs_04‑24.png | . | 频谱 CSV（可选） | 每通道功率谱，列名 freq_Hz，ch_1，ch_2… | output/fft_power_03‑13.csv | . . 运行示例脚本时，程序会自动在终端打印文件保存路径。 . 🔎 说明 . | 当前模块以 离线监测数据 演示；后续可对接城市生命线平台的 实时加速度流，用于在线频谱监控、阈值报警与趋势对比。 | . ",
+    "url": "/acc_spectral_analyse/README.html#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#输出结果说明"
+  },"46": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "🔁 后续优化建议",
+    "content": ". | 支持批量文件循环分析、自动生成日报/周报 | 引入 Welch、PSD 等功率谱密度估计方法 | 支持输出 SVG 和矢量 PDF 以适配报告排版 | 可拓展为 Dash / Streamlit 前端，实现交互式频谱浏览 . 返回首页 . | . ",
+    "url": "/acc_spectral_analyse/README.html#%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/acc_spectral_analyse/README.html#后续优化建议"
+  },"47": {
+    "doc": "加速度频谱分析模块（acc_spectral_analyse）",
+    "title": "加速度频谱分析模块（acc_spectral_analyse）",
+    "content": " ",
+    "url": "/acc_spectral_analyse/README.html",
+    
+    "relUrl": "/acc_spectral_analyse/README.html"
+  },"48": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "🧩 特征分析 - PCA数据降维模型",
+    "content": "| 城市生命线安全工程 | 多通道数据处理 | 特征压缩与提取 | PCA 主成分分析 | 趋势监测与降维建模 | . ",
+    "url": "/feature_analysis/README.html#-%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90---pca%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/feature_analysis/README.html#-特征分析---pca数据降维模型"
+  },"49": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "📚 项目背景",
+    "content": "在大型桥梁、隧道等城市生命线工程中，常部署多个温度传感器用于采集结构或环境温度数据。这些多通道数据往往呈现出高相关、高冗余等特征，直接使用可能导致建模效率低、解释性差。 . 本模块基于 主成分分析（PCA） 技术，能够对温度等高维数据进行有效压缩，将多个原始通道整合为少量综合特征，显著提升后续异常识别、特征聚类、建模效率与可视化清晰度，为智慧运维平台的温度趋势识别与特征分析提供强力支撑。 . ",
+    "url": "/feature_analysis/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/feature_analysis/README.html#-项目背景"
+  },"50": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "📌 模块简介",
+    "content": "本模块为城市生命线安全工程监测平台桥梁专项的特征分析子模块：PCA数据降维模型，支持多通道温度、位移或挠度等高维数据的标准化处理、主成分提取、方差解释分析与趋势可视化，具备良好的通用性与平台可集成性。 . | 项目 | 内容 | . | 模块名称 | feature_analysis | . | 核心函数 | load_temperature, compute_pca, plot_scree, plot_combined, run_pipeline | . | 作者 | 肖图刚 | . | 开发时间 | 2025‑06‑17 | . | 最后修改 | 2025‑06‑18（优化模块结构与 README 展示，增强平台集成能力） | . ",
+    "url": "/feature_analysis/README.html#-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/feature_analysis/README.html#-模块简介"
+  },"51": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "🌟 功能描述",
+    "content": "✅ 支持任意数量温度通道分析 ✅ 自动归一化标准化，消除量纲影响 ✅ 基于 sklearn 高效 PCA 分解：获取主成分 + 载荷矩阵 ✅ 碎石图自动绘制：展示主成分解释力 ✅ 合成主成分趋势图：与原始温度曲线对比展示 ✅ 支持一键调用，自动保存图像结果 . ",
+    "url": "/feature_analysis/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/feature_analysis/README.html#-功能描述"
+  },"52": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "📂 输入数据说明",
+    "content": ". | 文件格式：CSV 文件（推荐 UTF-8 编码） | 列结构：time | temp1 | temp2 | … | tempN | 时间列：自动识别时间戳（可为字符串）；若无时间列，则默认使用行号索引 | 通道数量：建议 ≥ 4，降维优势明显 | 数据完整性：缺失值需预处理（后续版本将支持自动插补） | . ",
+    "url": "/feature_analysis/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/feature_analysis/README.html#-输入数据说明"
+  },"53": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python ≥ 3.9.16 | 依赖库 . | numpy ≥ 2.0.2 | pandas ≥ 2.2.3 | matplotlib ≥ 3.9.4 | scikit-learn ≥ 1.6.1 | . | . 📝 模块兼容 Jupyter、命令行与平台集成运行环境 . ",
+    "url": "/feature_analysis/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/feature_analysis/README.html#️-运行环境与依赖"
+  },"54": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖： . pip install -r requirements.txt . 📁 安装模块： . pip install -e . ✅ 运行示例： . python example.py . 或在 Python 代码中调用： . \"\"\"Quick start example for pca_temp_analysis.\"\"\" from pathlib import Path from feature_analysis import run_pipeline DATA = \"datasets/temp_10min.csv\" run_pipeline(DATA, out_dir=\"figures\") . ",
+    "url": "/feature_analysis/README.html#%EF%B8%8F-%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/feature_analysis/README.html#️-快速使用说明"
+  },"55": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "🔢 主要流程",
+    "content": ". | 数据读取与标准化 load_and_standardize | 主成分提取分析 perform_pca | 碎石图绘制 plot_scree_curve：展示前 30 阶主成分解释率 | 趋势图绘制 plot_pc_sum：展示前 3 个主成分与原始温度的合成对比 | 信息输出：控制台打印主成分解释率、保存图像至指定目录 | . ",
+    "url": "/feature_analysis/README.html#-%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/feature_analysis/README.html#-主要流程"
+  },"56": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "💾 输出结果说明",
+    "content": "| 类型 | 描述 | . | 图像 PNG | 主成分分析的碎石图；原始数据&amp;降维数据对比图 | . | 控制台输出 | 前 3 个主成分解释的总方差比例、主成分矩阵形状、原始通道数量 | . | 返回对象 | pca, pcs, exp_var | . 终端输出： . 前 3 个主成分解释的总方差比例: 99.66% Plots saved to D:\\pycode\\lifeline_bridge_alert\\py_modu\\feature_analysis\\figures . 图例示例1（碎石图）： . 图例示例2（主成分趋势对比图）： . ",
+    "url": "/feature_analysis/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/feature_analysis/README.html#-输出结果说明"
+  },"57": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "🔁 平台对接与后续优化建议",
+    "content": "✅ 支持在线生命线平台的传感数据流分析与动态降维，可基于滑动时间窗对主成分演化趋势进行连续追踪，适应长期状态评估与异常监测需求； . ✅ 支持多源异构数据集扩展，包括环境温度、湿度、风速、车流量等运营因素与结构响应信号（应变、位移、加速度）的联合降维与综合分析； . ✅ 输出主成分贡献率与对应通道载荷（主成分载荷矩阵）； . ✅ 集成异常突变检测机制，基于主成分序列构建结构响应的异常分数（如CUSUM/Bayesian Change Point Detection），对接报警模块，实现前端预警触发； . ✅ 支持可交互式可视化平台（Streamlit / Dash）集成，实现参数配置、通道选择、图表交互及报告自动导出等功能； . ✅ 引入神经网络等非线性降维策略，如自编码器（AutoEncoder）、t-SNE、UMAP 等，挖掘复杂非线性耦合关系； . ✅ 支持相关性热力图与通道关联网络图生成，基于皮尔逊相关系数或互信息，展示通道间耦合特征，辅助聚类与冗余分析； . 模块版本：v0.1.0 项目负责人：肖图刚 开发单位：城市生命线工程技术中心 . 返回首页 . ",
+    "url": "/feature_analysis/README.html#-%E5%B9%B3%E5%8F%B0%E5%AF%B9%E6%8E%A5%E4%B8%8E%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/feature_analysis/README.html#-平台对接与后续优化建议"
+  },"58": {
+    "doc": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "title": "特征分析-PCA 特征降维模块（feature_analysis）",
+    "content": " ",
+    "url": "/feature_analysis/README.html",
+    
+    "relUrl": "/feature_analysis/README.html"
+  },"59": {
+    "doc": "船撞预警模块（ship_collision_alert）",
+    "title": "🚢 船撞预警模块（开发中）",
+    "content": "该模块正在开发中，敬请期待。 . 返回首页 . ",
+    "url": "/ship_collision_alert/README.html#-%E8%88%B9%E6%92%9E%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E4%B8%AD",
+    
+    "relUrl": "/ship_collision_alert/README.html#-船撞预警模块开发中"
+  },"60": {
+    "doc": "船撞预警模块（ship_collision_alert）",
+    "title": "船撞预警模块（ship_collision_alert）",
+    "content": " ",
+    "url": "/ship_collision_alert/README.html",
+    
+    "relUrl": "/ship_collision_alert/README.html"
+  },"61": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "📈 统计分析模块",
+    "content": "| 城市生命线安全工程  |  历史监测数据统计 | 分布拟合与检验 | 多传感器对比分析 | 高斯混合分布 | . ",
+    "url": "/stats_analysis/README.html#-%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90%E6%A8%A1%E5%9D%97",
+    
+    "relUrl": "/stats_analysis/README.html#-统计分析模块"
+  },"62": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "📚 项目背景",
+    "content": "在桥梁等基础设施的长期运行过程中，监测平台会采集大量结构与环境相关的数据。如何面向历史数据开展批量统计分析，提取关键特征参数，识别潜在异常分布或数据漂移现象，是省级城市生命线安全监测平台的重要功能。 . 为支撑用户按需查看监测数据的统计信息，本模块支持对每种监测类型、每个传感器、指定时间段的数据进行集中分析，输出包括均值、方差、最大值、最小值等统计特征，并通过 高斯混合模型（Gaussian Mixture Model, GMM） 拟合数据的分布形态，辅助进行分布假设检验和分布函数参数估计。 . ",
+    "url": "/stats_analysis/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/stats_analysis/README.html#-项目背景"
+  },"63": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "📌 模块简介",
+    "content": "本模块为城市生命线安全工程监测平台桥梁专项的数据分析子模块：统计分析，用于指定时间段内任意监测点数据的自动化统计汇总与分布分析。模块兼容宽表与长表格式数据，支持 ISO 8601 时间戳解析，提供图形化的直方图 + 拟合分布函数曲线，可一键对比不同传感器或不同时段的统计特征。 . | 项目 | 内容 | . | 模块名称 | stats_analysis | . | 核心功能 | 多传感器统计分析、分布拟合、时段对比、GMM 参数化建模 | . | 典型应用 | 各类传感器历史数据分析、平台后台统计、分布建模辅助 | . | 作者 | 肖图刚 | . | 开发时间 | 2025‑06‑10 | . | 最后修改 | 2025‑06‑19（新增GMM分布拟合功能，版本号升级至 v0.2.0） | . | 支持平台 | 省级城市生命线工程监测平台 / 地市级桥梁监测平台 | . ",
+    "url": "/stats_analysis/README.html#-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/stats_analysis/README.html#-模块简介"
+  },"64": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "🌟 功能描述",
+    "content": "✅ 按时间段统计分析：支持任意时间范围内数据查询与特征统计 ✅ 多监测量、多传感器处理：批量加载与处理传感器数据 ✅ 核心统计量计算：均值、方差、最大值、最小值 ✅ 分布形态建模与拟合：采用 k = 2 高斯混合进行参数估计 ✅ 分布可视化：直方图 + GMM 曲线叠加，便于人工判断数据特性 ✅ 统计对比分析：可对比不同传感器 / 同一传感器不同时段的变化 ✅ 多形式输出：终端表格、CSV汇总、GMM参数 NPY 文件导出 . ",
+    "url": "/stats_analysis/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/stats_analysis/README.html#-功能描述"
+  },"65": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "📂 输入数据说明",
+    "content": ". | 文件格式：CSV 格式数据文件 | 时间列：第一列必须为时间字段（time），推荐为 ISO 8601 格式字符串，其他时间格式可能需要程序修改兼容 | 支持格式： . | 长表模式：time, sensor_id, reading（推荐用于平台结构化导出） | 宽表模式：time, sensorA, sensorB, …（适用于本地批量采样数据，目前采用） | . | 数据要求： . | 允许缺失值 NaN，内部自动剔除 | 支持浮点型正负数值，不限制单位 | . | . ",
+    "url": "/stats_analysis/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/stats_analysis/README.html#-输入数据说明"
+  },"66": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python ≥ 3.9 | 依赖库 | . | 库 | 版本要求 | . | numpy | ≥ 2.0.2 | . | pandas | ≥ 2.2.3 | . | matplotlib | ≥ 3.9.4 | . | scikit-learn | ≥ 1.6.1 | . | tabulate（可选） | ≥ 0.9.0 | . ",
+    "url": "/stats_analysis/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/stats_analysis/README.html#️-运行环境与依赖"
+  },"67": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "🛠️ 使用说明",
+    "content": "安装依赖 . pip install -r requirements.txt . 安装模块 . pip install -e . 快速运行示例 . python examples.py . 或自定义运行： . \"\"\"Quick start for gmm_stats\"\"\" from pathlib import Path from stats_analysis import run_pipeline csv = Path(\"datasets/wy-temp_10min_3.csv\") fig_dir = Path(\"figures\") # Optional: specify a directory for figures sensors = [ \"message-ba00cfd4-404d-2a85-e7d3-3a01897ad587\", \"message-fa7cc988-b44f-f54f-c265-3a0189655a95\", \"ZK_avg\", \"Wy07\", ] time_range = (\"2022-07-01\", \"2022-12-31\") run_pipeline(csv, sensors, time_range, out_dir=\"reports\",fig_dir=fig_dir, plot=True) . ",
+    "url": "/stats_analysis/README.html#%EF%B8%8F-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/stats_analysis/README.html#️-使用说明"
+  },"68": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "🔢 模块主要流程",
+    "content": ". | 加载监测数据：支持宽表 / 长表智能解析 | 传感器筛选：用户可指定多个传感器进行并行分析 | 时间段限定：按需指定分析的起止时间 | 统计特征提取：均值、方差、最大值、最小值 | GMM 建模：自动拟合 2 分量高斯混合模型，输出权重、均值、协方差 | 图形可视化：直方图 + 混合分布函数曲线 | 结果导出：控制台打印、CSV 汇总、NPY 参数文件 | . ",
+    "url": "/stats_analysis/README.html#-%E6%A8%A1%E5%9D%97%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/stats_analysis/README.html#-模块主要流程"
+  },"69": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "📈 输出结果说明",
+    "content": "| 类型 | 内容说明 | 示例文件 | . | 控制台表格 | tabulate 中文表头格式，或 DataFrame 输出 | 自动输出至终端 | . | 统计汇总 CSV | 传感器统计特征 &amp; GMM 参数 | reports/stats_2022-07-01~2022-12-31.csv | . | NPY 参数文件 | GMM 分布权重 / 均值 / 协方差 | reports/T01_gmm_means.npy 等 | . | 拟合图像 | 直方图 + GMM 概率密度叠加图 | 运行时弹窗（如需保存可手动导出） | . ",
+    "url": "/stats_analysis/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/stats_analysis/README.html#-输出结果说明"
+  },"70": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "🔍 对比分析功能说明",
+    "content": ". | 同一时间段，多个传感器 → 分析空间布设差异 | 同一传感器，不同时段 → 分析时间演化趋势 | 适用于温度、应变、位移、风速等连续型监测量 | . 平台用户可通过设置不同传感器 ID 与时间范围组合，灵活对比不同设备或不同时间段的统计信息，判断是否存在数值波动或分布形态改变，辅助判定异常工况。 . ",
+    "url": "/stats_analysis/README.html#-%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/stats_analysis/README.html#-对比分析功能说明"
+  },"71": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "📊 示例输出预览",
+    "content": "控制台输出： . | 传感器ID/监测点编号 | 均值 | 方差 | 最大值 | 最小值 | GMM权重 | GMM均值向量 | GMM方差 | . | message-ba00cfd4-404d-2a85-e7d3-3a01897ad587 | 15.55 | 81.907 | 36.613 | 0.014 | [0.6949, 0.3051] | [20.3861, 4.5354] | [39.6485, 3.5629] | . | message-fa7cc988-b44f-f54f-c265-3a0189655a95 | 15.193 | 80.071 | 33.386 | 1.08 | [0.6796, 0.3204] | [20.3168, 4.3246] | [34.6558, 2.5899] | . | ZK_avg | 16.76 | 124.48 | 46.054 | -2.047 | [0.7655, 0.2345] | [20.8279, 3.4846] | [90.6737, 4.5702] | . | Wy07 | 81.094 | 2594.3 | 167.446 | -45.576 | [0.7642, 0.2358] | [62.4545, 141.5077] | [1887.5428, 109.108] | . 统计结果结果已保存至 D:\\pycode\\lifeline_bridge_alert\\py_modu\\stats_analysis\\reports 图像已保存至 D:\\pycode\\lifeline_bridge_alert\\py_modu\\stats_analysis\\figures . 可视化图表： . ",
+    "url": "/stats_analysis/README.html#-%E7%A4%BA%E4%BE%8B%E8%BE%93%E5%87%BA%E9%A2%84%E8%A7%88",
+    
+    "relUrl": "/stats_analysis/README.html#-示例输出预览"
+  },"72": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "🔁 模块拓展建议",
+    "content": ". | 支持 GMM 阶数自适应选择混合分布参数k（AIC/BIC 评估自动确定最佳 k）,支持更多统计分析方法和概率分布模型 | 滑窗统计与趋势检测：分析监测量的演化过程 | 集成 API 接口：供生命线平台前端选择传感器后调用 | 支持交互可视化：结合 Streamlit/Dash 实现在线分析工具 . 返回首页 . | . ",
+    "url": "/stats_analysis/README.html#-%E6%A8%A1%E5%9D%97%E6%8B%93%E5%B1%95%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/stats_analysis/README.html#-模块拓展建议"
+  },"73": {
+    "doc": "统计分析模块（stats_analysis）",
+    "title": "统计分析模块（stats_analysis）",
+    "content": " ",
+    "url": "/stats_analysis/README.html",
+    
+    "relUrl": "/stats_analysis/README.html"
+  },"74": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "🌉  混凝土主梁裂缝超限预警模型",
+    "content": "| 城市生命线安全工程 | 裂缝宽度监测 | 多元回归建模 | 分级异常识别与可视化 | . ",
+    "url": "/crack_detection_alert/README.html#--%E6%B7%B7%E5%87%9D%E5%9C%9F%E4%B8%BB%E6%A2%81%E8%A3%82%E7%BC%9D%E8%B6%85%E9%99%90%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/crack_detection_alert/README.html#--混凝土主梁裂缝超限预警模型"
+  },"75": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "📚 项目背景",
+    "content": "混凝土主梁作为桥梁的核心承重构件，其裂缝的发展直接关系到结构的安全性与耐久性。裂缝宽度在服役期内会因温度、湿度、荷载等环境与运营因素发生一定变化，部分微小波动属正常范畴。然而，一旦裂缝扩展异常或突破预设安全阈值，可能意味着局部损伤的恶化，甚至会发展到整体结构破坏，需及时识别并预警。 . 本模块通过构建 裂缝宽度与环境因子的回归关系模型，结合 残差动态阈值分级判别，对裂缝宽度进行基准预测和多级异常监测。支持裂缝异常趋势可视化、历史数据批量分析和多级报警点自动提取，适用于桥梁结构健康监测系统和城市生命线安全工程的集成部署。 . ",
+    "url": "/crack_detection_alert/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/crack_detection_alert/README.html#-项目背景"
+  },"76": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "📌 模型简介",
+    "content": "该模块为 城市生命线安全工程监测平台桥梁预警体系核心子模块Ⅵ：混凝土主梁裂缝超限预警模型，旨在识别裂缝宽度在环境变化影响下的非正常发展趋势，并通过回归建模与动态残差分析实现 多级智能预警。 . | 模块名称：crack_detection_alert | 模型名称：混凝土主梁裂缝超限预警模型 | 作者：肖图刚 | 开发时间：2025年5月30日 | 最后修改：2025年6月12日 | . ",
+    "url": "/crack_detection_alert/README.html#-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/crack_detection_alert/README.html#-模型简介"
+  },"77": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "🌟 功能描述",
+    "content": "✅ 加载并处理裂缝宽度及其环境监测数据（支持缺失值处理、时间对齐） ✅ 基于温度、湿度等外部因素构建裂缝宽度的基准预测模型（默认线性回归） ✅ 计算残差并基于标准差动态设定多级预警阈值（默认三级） ✅ 自动识别超限点并输出对应时间与等级标记 ✅ 绘制实测宽度与预测值变化趋势、动态阈值曲线及预警标注图 ✅ 支持扩展至随机森林、SVR 等机器学习模型，实现多算法比较分析 . ",
+    "url": "/crack_detection_alert/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/crack_detection_alert/README.html#-功能描述"
+  },"78": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "📂 输入数据说明",
+    "content": ". | 格式：本地 CSV 文件（带表头） | 建议字段结构： | . | timestamp | crack_width (mm) | temperature (°C) | . | 2025-05-01 08:00:00 | 0.28 | 27.1 | . | 数据来源：主梁裂缝宽度计传感器 + 温湿度环境监测仪 | 采样频率：10分钟均值、1小时重采样或日均值均可 | 特别说明：环境因子字段可自定义扩展，如湿度、风速、车流量等 | . ",
+    "url": "/crack_detection_alert/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/crack_detection_alert/README.html#-输入数据说明"
+  },"79": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python：≥ 3.9.16 | 依赖库： . | pandas ≥ 2.2.3 | numpy ≥ 1.26.4 | matplotlib ≥ 3.9.4, | scikit-learn ≥ 1.5.2 | tabulate ≥ 0.9.0 | . | . 📝 使用建议 . | 模型参数如预警等级标准差倍数、回归模型可根据监测桥梁的实际特性灵活配置； | 建议结合巡检结果验证异常识别结果，辅助桥梁维养决策； | 支持定期训练更新回归模型，增强预测适应性。 | . ",
+    "url": "/crack_detection_alert/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/crack_detection_alert/README.html#️-运行环境与依赖"
+  },"80": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖： . pip install -r requirements.txt . 📁 安装模块： . bash cd py_modu/crack_detection_alert pip install . ✅ 安装成功： . Successfully installed crack_detection_alert-0.1.0 . ⚙️ 运行示例（example.py）： . import pandas as pd from crack_detection_alert import ( load_data, train_temperature_model, apply_temperature_correction, compute_growth_rate, check_anomalies, plot_crack_trend,print_crack_alert_points ) train_file = 'D:/pycode/lifeline_bridge_alert/datasets/crack_temp_train.csv' test_file = 'D:/pycode/lifeline_bridge_alert/datasets/crack_temp_test.csv' # 设置参数 thresholds = (0.25, 0.01, -0.25, -0.01) ref_temp = 25.0 # 先读取 CSV，确认温度通道个数 df_temp = pd.read_csv(train_file, header=None) n_cols = df_temp.shape[1] temp_count = n_cols - 2 # 除去时间戳和裂缝宽度 temp_columns = [f'temp_{i+1}' for i in range(temp_count)] # 加载训练数据，训练模型 train_df = load_data(train_file, temp_columns) a, b = train_temperature_model(train_df) # 加载测试数据并修正 test_df = load_data(test_file, temp_columns) test_df, baseline_crack = apply_temperature_correction(test_df, a, b, ref_temp) # 计算增长率 current_width = test_df['crack_true'].iloc[-1] avg_rate, max_rate = compute_growth_rate(test_df) # 判断异常 if check_anomalies(current_width, avg_rate, max_rate, thresholds): print(\"裂缝异常预警!\") else: print(\"✅ 裂缝状态正常。\") # 打印裂缝预警点 print_crack_alert_points(test_df, crack_col='crack_true', width_th=thresholds[0], min_width_th=thresholds[2], growth_th=thresholds[1], min_growth_th=thresholds[3]) # 绘图 plot_crack_trend(test_df, crack_col='crack_true', threshold=thresholds[0], min_threshold=thresholds[2], growth_th=thresholds[1], min_growth_th=thresholds[3]) . ",
+    "url": "/crack_detection_alert/README.html#%EF%B8%8F-%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/crack_detection_alert/README.html#️-快速使用说明"
+  },"81": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "💾 输出结果说明",
+    "content": ". | 核心输出： . | crack_alert_output.csv：包含裂缝宽度时序值、增长率、异常类别标识 | crack_alert_plot.png：裂缝发展趋势图，标注异常增长点及预警阈值线 | 控制台打印输出异常裂缝点及预警类别详情，便于快速浏览 | . | 输出字段说明（CSV）： | . | timestamp | crack_width (mm) | growth_rate (mm/day) | alert_type | . | 2025-05-07 03:00:00 | -0.221 | +0.012 | 正增长异常（&gt; 0.01） | . | 2025-05-11 03:00:00 | -0.231 | -0.011 | 负增长异常（&lt; -0.01） | . | 控制台输出说明：按四种类型汇总预警信息并打印： . | ✅ 【裂缝宽度 &gt; 0.25 mm】：提示是否存在宽度超限点 | ✅ 【裂缝宽度 &lt; -0.25 mm】：提示是否存在反向超限点 | ✅ 【增长率 &gt; +0.01 mm/天】：表示裂缝快速扩展，需重点关注 | ✅ 【增长率 &lt; -0.01 mm/天】：表示裂缝显著闭合，可能存在受力变化或测量误差 | . | 实际输出示例： | . 🔎 说明：本模块当前以 裂缝宽度阈值 + 日增长率双重标准 实现预警分类，便于识别裂缝超限或发展趋势异常的情况。支持未来拓展更多判断逻辑（如累计扩展率、周期性波动分析等）。 . ",
+    "url": "/crack_detection_alert/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/crack_detection_alert/README.html#-输出结果说明"
+  },"82": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "🔁 后续优化建议",
+    "content": ". | 增加模型选择接口（如机器学习智能算法 SVR、RF、XGBoost）提高适应性 | 拓展支持交通流、荷载等多源信息融合建模 | 对接实时数据库，实现在线异常监测与滚动预警 | 支持时变模型训练与趋势对比，增强长期监测能力 . 返回首页 . | . ",
+    "url": "/crack_detection_alert/README.html#-%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/crack_detection_alert/README.html#-后续优化建议"
+  },"83": {
+    "doc": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "title": "混凝土主梁裂缝超限预警模块（crack_detection_alert）",
+    "content": " ",
+    "url": "/crack_detection_alert/README.html",
+    
+    "relUrl": "/crack_detection_alert/README.html"
+  },"84": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "⚙️ 支座脱空预警模型",
+    "content": "| 城市生命线安全工程 | 支座反力监测 | 设定阈值判别 | 分级异常识别与可视化 | . ",
+    "url": "/bearing_alert/README.html#%EF%B8%8F-%E6%94%AF%E5%BA%A7%E8%84%B1%E7%A9%BA%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/bearing_alert/README.html#️-支座脱空预警模型"
+  },"85": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "📚 项目背景",
+    "content": "支座是桥梁结构中连接上部结构与下部墩台的关键构件，承担着传递荷载与适应位移的作用。在长期服役过程中，由于施工质量缺陷、材料老化、桥面不均匀沉降或温度效应等影响，支座可能发生脱空、偏压或失效等病害，导致结构传力路径异常，严重时将引起主梁局部应力集中、裂缝甚至跨中坍塌等重大隐患。 . 支座反力的长期监测可用于辅助判断支座是否存在异常失效迹象。本模块基于实际支座反力相对基准反力的下降幅度，通过设定多级阈值判断支座是否发生脱空或异常载荷传递，并提供自动识别、分级预警与可视化能力，适用于桥梁结构健康监测系统的集成部署。 . ",
+    "url": "/bearing_alert/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/bearing_alert/README.html#-项目背景"
+  },"86": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "📌 模型简介",
+    "content": "该模块为 城市生命线安全工程监测平台桥梁预警体系核心子模块Ⅶ：支座脱空预警模型，通过对支座反力数据的动态识别与报警判别，辅助识别结构受力异常、支座失效等潜在问题。 . | 模块名称：bearing_alert | 模型名称：支座脱空预警模型 | 作者：肖图刚 | 开发时间：2025年6月12日 | 最后修改：2025年6月12日 | . ",
+    "url": "/bearing_alert/README.html#-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/bearing_alert/README.html#-模型简介"
+  },"87": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "🌟 功能描述",
+    "content": "✅ 加载包含时间戳与支座反力的时程数据（CSV 格式） ✅ 绘制支座反力变化曲线，自动叠加设计反力线及多级预警阈值 ✅ 支持灵活配置各级报警阈值（基于设计反力） ✅ 自动识别一级、二级、三级异常点并打印统计结果 ✅ 提供批量分析能力和可视化输出结果 ✅ 支持部署至结构健康监测系统，用于桥梁支座状态在线评估 . ",
+    "url": "/bearing_alert/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/bearing_alert/README.html#-功能描述"
+  },"88": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "📂 输入数据说明",
+    "content": ". | 格式：本地 CSV 文件，默认含表头，第一列为时间戳，第二列为支座反力（单位 kN） | 字段结构示例： | . | timestamp | reaction (kN) | . | 2025-06-01 00:00:00 | 1032.4 | . | 2025-06-01 01:00:00 | 998.2 | . | … | … | . | 数据来源：桥梁支座监测传感器（如压力传感器、称重垫片等） | 采样频率：1小时或日均值等，建议时间一致性处理后分析 | 特别说明：如存在多个支座，请拆分为单列数据分别建模或批量处理；当前数据为模拟数据，后续需更换成实际监测数据 | . ",
+    "url": "/bearing_alert/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/bearing_alert/README.html#-输入数据说明"
+  },"89": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python：≥ 3.9.16 | 依赖库： . | pandas ≥ 2.2.3 | numpy ≥ 1.26.4 | matplotlib ≥ 3.9.4 | tabulate ≥ 0.9.0 | . | . 📝 使用建议 . | 支座基准反力应根据桥梁监测系统前期的稳定支座反力数据进行录入； | 各级报警阈值建议结合经验数据或试验研究成果进行设定； | 建议定期校准传感器零点，避免长期漂移影响误判。 | . ",
+    "url": "/bearing_alert/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/bearing_alert/README.html#️-运行环境与依赖"
+  },"90": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖： . pip install -r requirements.txt . 📁 安装模块： . cd py_modu/bearing_alert pip install -e . ✅ 安装成功： . Successfully installed bearing_alert-0.1.0 . ⚙️ 运行示例(example.py)： . from bearing_alert import analyze_bearing_data, print_alert_statistics, visualize_alerts def main(): input_file = 'datasets/bearing_data.csv' base_force = 1000 # kN thresholds = { 'normal': 0.05, 'level3': 0.10, 'level2': 0.15 } df = analyze_bearing_data(input_file, base_force, thresholds) print_alert_statistics(df) visualize_alerts(df, base_force, thresholds) if __name__ == '__main__': main() . ",
+    "url": "/bearing_alert/README.html#%EF%B8%8F-%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/bearing_alert/README.html#️-快速使用说明"
+  },"91": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "💾 输出结果说明",
+    "content": ". | 核心输出： . | bearing_alert_output.csv：包含各时间点支座反力数值、设定基准值、各级预警判断结果 | bearing_alert_plot.png：支座反力时序变化趋势图，标注各级预警阈值线与异常点 | 控制台打印输出 各级预警统计信息表格，便于技术人员快速定位异常时段和幅度 | . | 输出字段说明（CSV 文件）： | . | timestamp | bearing_force (kN) | level_3 | level_2 | level_1 | . | 2025-06-11 10:15 | 913.47 | True | False | False | . | 2025-06-11 11:16 | 885.21 | False | True | False | . | 控制台输出样例： | . ===== 各级预警统计信息 ===== 【三级预警】 (数量: 16) +------------------+-------------------+ | 时间点 | 支座反力 (kN) | +------------------+-------------------+ | 2025-06-11 10:15 | 913.468790213688 | 2025-06-11 10:16 | 921.0032866994788 | 2025-06-11 10:18 | 949.4867551866232 | 2025-06-11 10:21 | 933.5078519465884 | 2025-06-11 10:25 | 933.0100725514616 | 2025-06-11 10:28 | 943.9602569031078 | 2025-06-11 10:35 | 947.691562841764 | 2025-06-11 10:37 | 941.1662540011592 | 2025-06-11 10:39 | 911.613195044809 | 2025-06-11 10:40 | 936.8725580440628 | 2025-06-11 10:46 | 930.859120385303 | 2025-06-11 10:51 | 919.4783937854908 | 2025-06-11 11:04 | 945.7466010397588 | 2025-06-11 11:05 | 942.1517350367732 | 2025-06-11 11:21 | 910.4972434159642 | 2025-06-11 11:37 | 931.4594020747152 | +------------------+-------------------+ 【二级预警】 (数量: 1) +------------------+-------------------+ | 时间点 | 支座反力 (kN) | +------------------+-------------------+ | 2025-06-11 11:16 | 885.2101958364102 | +------------------+-------------------+ . | 图像示例： | . 🔎 说明： . | 本模块当前以 支座反力偏离设计值的程度 实现分级预警，阈值可灵活设定，适用于突变型和渐变型结构异常识别场景。当前模型支持单点监测，后续可扩展多点联合诊断与趋势分析功能。 | ⚠️ 当前使用的数据为 模拟生成数据，用于算法验证与功能测试；实际部署时需替换为结构监测系统采集的真实支座反力数据，格式需包含时间戳与支座反力（单位：kN），并确保采样时间间隔一致、数据连续性良好。 | . ",
+    "url": "/bearing_alert/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/bearing_alert/README.html#-输出结果说明"
+  },"92": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "🔁 后续优化建议",
+    "content": ". | 输入数据替换为结构监测系统采集的真实支座反力数据； | 增加对多支座/多桥梁批量处理功能； | 融合环境温度或荷载变化，构建多元回归残差分析模型； | 引入机器学习异常检测算法（如 Isolation Forest、LOF）提升识别能力； | 对接实时数据库，支持监控平台图形化展示与报警推送。 . 返回首页 . | . ",
+    "url": "/bearing_alert/README.html#-%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/bearing_alert/README.html#-后续优化建议"
+  },"93": {
+    "doc": "支座脱空预警模块（bearing_alert）",
+    "title": "支座脱空预警模块（bearing_alert）",
+    "content": " ",
+    "url": "/bearing_alert/README.html",
+    
+    "relUrl": "/bearing_alert/README.html"
+  },"94": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "🌉 伸缩缝位移异常预警模型",
+    "content": "| 城市生命线安全工程 | 结构健康监测 | 动态回归建模 | 多级预警与可视化 | . ",
+    "url": "/joint_displacement_alert/README.html#-%E4%BC%B8%E7%BC%A9%E7%BC%9D%E4%BD%8D%E7%A7%BB%E5%BC%82%E5%B8%B8%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-伸缩缝位移异常预警模型"
+  },"95": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "📚 项目背景",
+    "content": "伸缩缝位移的异常变化是桥梁长期服役中常见的潜在病害。受环境温度等外部因素影响，伸缩缝位移会出现周期性波动。然而，若伸缩缝位移出现超出正常范围的异常波动，往往意味着结构局部受力状态改变或病害隐患，影响桥梁安全性与使用性能。 . 本模块基于动态回归建模和阈值分析方法，结合温度修正与残差动态阈值计算，实现伸缩缝位移的异常趋势判别和多级预警。模块具备 趋势可视化、历史数据分析、多级预警判别 等功能，支持集成至省级城市生命线安全监测平台。 . ",
+    "url": "/joint_displacement_alert/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-项目背景"
+  },"96": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "📌 模型简介",
+    "content": "本项目为 城市生命线安全工程监测平台桥梁预警体系核心子模块Ⅱ：伸缩缝位移异常预警模型，旨在识别伸缩缝在长期服役过程中的 异常位移波动及潜在的损伤问题。 . 模块利用温度修正、基准预测（线性回归）与滑动残差动态阈值分析，动态判断伸缩缝位移的波动是否超出预警阈值，实现 正常、三级、二级、一级预警 的多级判别。支持历史数据离线分析及图形化展示，也可拓展为在线监测系统的子模块。 . | 模块名称：joint_displacement_alert | 模型名称：伸缩缝位移异常预警模型 | 作者：肖图刚 | 开发时间：2025年4月27日 | 最后修改：2025年6月11日 | . ",
+    "url": "/joint_displacement_alert/README.html#-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-模型简介"
+  },"97": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "🌟 功能描述",
+    "content": "✅ 加载并预处理历史监测数据（时间戳对齐、缺失值处理、10分钟均值降采样等） ✅ 进行温度修正，计算平均温度特征，剔除环境温度影响 ✅ 建立位移预测基准模型（线性回归）并计算动态残差阈值 ✅ 滑动窗口实时判别异常位移点，分级预警（正常、三级、二级、一级） ✅ 输出各级异常点数量及对应的时间戳 ✅ 可视化动态趋势图、位移-温度关系及多级预警判别结果 ✅ 模块化设计，支持拓展集成到结构健康监测平台 . ",
+    "url": "/joint_displacement_alert/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-功能描述"
+  },"98": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "📂 输入数据说明",
+    "content": ". | 格式：本地 CSV 文件（3列、无表头） | 数据内容：1️⃣ 时间戳（如 2024-05-22 11:00:00）2️⃣ 伸缩缝位移（单位：mm）3️⃣ 多通道温度（单位：℃，可多传感器温度数据取平均） | 数据来源：桥梁伸缩缝监测系统或附近温度测点数据（建议覆盖一年或更长周期） | 采样频率：10分钟均值或1小时重采样，保障数据平稳性 | 特别说明：如位移传感器无温度监测能力，可引入附近监测点温度数据，做好对齐处理 | . ",
+    "url": "/joint_displacement_alert/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-输入数据说明"
+  },"99": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "💾 输出结果说明",
+    "content": ". | 核心输出： . | 伸缩缝位移预测序列（基准模型） | 残差动态阈值曲线 | 各级预警判别结果（含异常点数量和时间分布） | 关键时段的可视化趋势图（PNG） | . | 可拓展输出： . | 季度/年度位移增长率 | 回归模型参数与残差分析 | 潜在异常时间段提示，供运维管理参考 | . | . ",
+    "url": "/joint_displacement_alert/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-输出结果说明"
+  },"100": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python：≥ 3.9.16 | 依赖库： . | pandas ≥ 2.2.3 | numpy ≥ 1.26.4 | matplotlib ≥ 3.9.4 | scikit-learn ≥ 1.5.2 | tabulate ≥ 0.9.0 | . | . 📝 使用建议 . | 适用于桥梁伸缩缝位移长期趋势分析与日常健康监测预警。 | 建议定期更新数据，并结合结构检修计划进行综合分析。 | 可与其他结构监测模块集成，提升整体健康监测智能化水平。 | . | 安装依赖： | . pip install -r requirements.txt . ",
+    "url": "/joint_displacement_alert/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/joint_displacement_alert/README.html#️-运行环境与依赖"
+  },"101": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "💻 代码示例",
+    "content": "📁 安装模块： . cd py_modu/joint_displacement_alert pip install . ✅ 安装成功： . Successfully installed joint_displacement_alert-0.1.0 . ⚙️ 运行示例： . python example.py . example.py 示例： . from joint_displacement_alert import ( load_joint_data, build_regression_model, detect_anomalies, plot_joint_displacement, print_alert_points ) alert_sigma_mapping = {1: 5, 2: 3, 3: 1} filepath = 'D:/pycode/lifeline_bridge_alert/wy-temp_10min_2.csv' # 先统一定义时间段参数 start_time = \"2022-10-01\" end_time = \"2022-10-07\" df = load_joint_data(filepath) df, model = build_regression_model(df) df, std_resid = detect_anomalies(df, alert_sigma_mapping) # 打印预警点，传入时间段参数 print_alert_points(df, start_time=start_time, end_time=end_time) # 绘图，传入时间段参数 plot_joint_displacement(df, alert_sigma_mapping, start_time=start_time, end_time=end_time) . ",
+    "url": "/joint_displacement_alert/README.html#-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-代码示例"
+  },"102": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "📊 输出示例",
+    "content": "训练数据总数：15944 2022-10-01~2022-10-07数据总数：865 ===== 各级伸缩缝位移预警点 ===== 一级预警:无异常点。 二级预警:无异常点。 三级预警:132个 +------------------+----------+ | 时间 | 位移(mm) | +------------------+----------+ | 2022-10-01 06:10 | 29.97 | 2022-10-01 06:20 | 30.22 | 2022-10-01 06:30 | 30.45 | 2022-10-01 06:40 | 30.73 | 2022-10-01 06:50 | 30.99 | 2022-10-01 07:00 | 31.24 | 2022-10-01 07:10 | 31.46 | 2022-10-01 07:20 | 31.64 | 2022-10-01 07:30 | 31.75 | 2022-10-01 07:40 | 31.86 | 2022-10-01 07:50 | 31.93 | 2022-10-01 08:00 | 32.02 | 2022-10-01 08:10 | 32.04 | 2022-10-01 08:20 | 32.10 | 2022-10-01 08:30 | 32.11 | 2022-10-01 08:40 | 32.10 | 2022-10-01 08:50 | 32.11 | 2022-10-01 09:00 | 32.09 | 2022-10-01 09:10 | 32.03 | 2022-10-01 09:20 | 31.95 | 2022-10-02 06:50 | 31.51 | 2022-10-02 07:00 | 31.85 | 2022-10-02 07:10 | 32.14 | 2022-10-02 07:20 | 32.51 | 2022-10-02 07:30 | 32.83 | 2022-10-02 07:40 | 33.17 | 2022-10-02 07:50 | 33.42 | 2022-10-02 08:00 | 33.59 | 2022-10-02 08:10 | 33.74 | 2022-10-02 08:20 | 33.90 | 2022-10-02 08:30 | 33.98 | 2022-10-02 08:40 | 33.98 | 2022-10-02 08:50 | 33.98 | 2022-10-02 09:00 | 33.96 | 2022-10-02 09:10 | 33.87 | 2022-10-02 09:20 | 33.78 | 2022-10-02 20:10 | 22.45 | 2022-10-02 20:20 | 22.38 | 2022-10-02 20:30 | 22.30 | 2022-10-02 20:40 | 22.23 | 2022-10-02 20:50 | 22.17 | 2022-10-02 21:00 | 22.14 | 2022-10-02 21:10 | 22.06 | 2022-10-02 21:20 | 22.01 | 2022-10-02 21:30 | 21.98 | 2022-10-02 21:40 | 21.90 | 2022-10-02 21:50 | 21.88 | 2022-10-02 22:00 | 21.80 | 2022-10-02 22:10 | 21.76 | 2022-10-02 22:20 | 21.69 | 2022-10-02 22:30 | 21.63 | 2022-10-02 22:40 | 21.56 | 2022-10-02 22:50 | 21.52 | 2022-10-02 23:00 | 21.48 | 2022-10-02 23:10 | 21.45 | 2022-10-02 23:20 | 21.39 | 2022-10-02 23:30 | 21.32 | 2022-10-02 23:40 | 21.27 | 2022-10-02 23:50 | 21.22 | 2022-10-03 00:00 | 21.15 | 2022-10-03 00:10 | 21.12 | 2022-10-03 00:20 | 21.06 | 2022-10-03 00:30 | 21.04 | 2022-10-03 00:40 | 21.02 | 2022-10-03 00:50 | 20.97 | 2022-10-03 01:00 | 20.97 | 2022-10-03 01:10 | 20.95 | 2022-10-03 01:20 | 20.94 | 2022-10-03 01:30 | 20.96 | 2022-10-03 01:40 | 20.97 | 2022-10-03 01:50 | 21.04 | 2022-10-03 02:00 | 21.09 | 2022-10-03 02:10 | 21.14 | 2022-10-03 02:20 | 21.21 | 2022-10-03 02:30 | 21.25 | 2022-10-03 20:10 | 16.53 | 2022-10-03 20:20 | 16.43 | 2022-10-03 20:30 | 16.35 | 2022-10-03 20:40 | 16.27 | 2022-10-03 20:50 | 16.16 | 2022-10-03 21:00 | 16.09 | 2022-10-03 21:10 | 15.98 | 2022-10-03 21:20 | 15.93 | 2022-10-03 21:30 | 15.86 | 2022-10-03 21:40 | 15.80 | 2022-10-03 21:50 | 15.73 | 2022-10-03 22:00 | 15.66 | 2022-10-03 22:10 | 15.55 | 2022-10-03 22:20 | 15.46 | 2022-10-03 22:30 | 15.44 | 2022-10-03 22:40 | 15.38 | 2022-10-03 22:50 | 15.34 | 2022-10-03 23:00 | 15.25 | 2022-10-03 23:10 | 15.17 | 2022-10-03 23:20 | 15.10 | 2022-10-03 23:30 | 15.03 | 2022-10-03 23:40 | 14.96 | 2022-10-03 23:50 | 14.93 | 2022-10-04 00:00 | 14.86 | 2022-10-04 00:10 | 14.84 | 2022-10-04 00:20 | 14.78 | 2022-10-04 00:30 | 14.77 | 2022-10-04 00:40 | 14.77 | 2022-10-04 00:50 | 14.77 | 2022-10-04 01:00 | 14.77 | 2022-10-04 01:10 | 14.77 | 2022-10-04 01:20 | 14.77 | 2022-10-04 01:30 | 14.85 | 2022-10-04 01:40 | 14.92 | 2022-10-04 01:50 | 15.00 | 2022-10-04 02:00 | 15.12 | 2022-10-04 02:10 | 15.27 | 2022-10-04 02:20 | 15.43 | 2022-10-04 02:30 | 15.63 | 2022-10-04 06:30 | 25.58 | 2022-10-04 06:40 | 26.27 | 2022-10-04 06:50 | 26.83 | 2022-10-04 07:00 | 27.17 | 2022-10-04 07:10 | 27.52 | 2022-10-04 07:20 | 27.71 | 2022-10-04 07:30 | 27.82 | 2022-10-04 07:40 | 27.83 | 2022-10-04 07:50 | 27.81 | 2022-10-04 08:00 | 27.71 | 2022-10-04 08:10 | 27.61 | 2022-10-04 08:20 | 27.47 | 2022-10-04 08:30 | 27.32 | 2022-10-04 08:40 | 27.20 | 2022-10-04 08:50 | 27.08 | 2022-10-04 09:00 | 27.02 | 2022-10-04 09:10 | 26.97 | 2022-10-04 09:20 | 26.91 | +------------------+----------+ . | | 返回首页 | . ",
+    "url": "/joint_displacement_alert/README.html#-%E8%BE%93%E5%87%BA%E7%A4%BA%E4%BE%8B",
+    
+    "relUrl": "/joint_displacement_alert/README.html#-输出示例"
+  },"103": {
+    "doc": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "title": "伸缩缝位移异常预警模块（joint_displacement_alert）",
+    "content": " ",
+    "url": "/joint_displacement_alert/README.html",
+    
+    "relUrl": "/joint_displacement_alert/README.html"
+  },"104": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "🧩 特征分析 - 加速度 EEMD 分解模块",
+    "content": "| 城市生命线安全工程 | 加速度特征分析 | IMF 模态识别 | EEMD + FFT | 结构异常识别 | . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90---%E5%8A%A0%E9%80%9F%E5%BA%A6-eemd-%E5%88%86%E8%A7%A3%E6%A8%A1%E5%9D%97",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-特征分析---加速度-eemd-分解模块"
+  },"105": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "📚 项目背景",
+    "content": "在桥梁、地铁、建筑等工程结构中，竖向加速度 是衡量结构动力响应与健康状态的关键指标。传统频域分析虽能揭示主频特征，但对于非平稳与非线性信号往往力不从心。 . 本模块基于 集合经验模态分解（EEMD） 方法，可将原始加速度数据分解为若干固有模态函数（IMFs），并结合 FFT 分析每个 IMF 的频域特性，从而实现对结构振动成分的细粒度解析，为模态识别、异常检测、损伤预警提供支撑。 . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-项目背景"
+  },"106": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "📌 模块简介",
+    "content": "本模块为城市生命线安全工程监测平台桥梁专项-特征分析子模块，用于对加速度信号进行非线性振动分解。功能包括 加速度通道选择、EEMD 分解、IMF 时域及频谱分析可视化，支持灵活配置采样点数、通道编号、噪声宽度等参数，具备良好的可扩展性和可集成性。 . | 项目 | 内容 | . | 模块名称 | acc_eemd_decompose | . | 核心函数 | load_and_preprocess, perform_eemd, plot_imfs,eemd_main | . | 作者 | 肖图刚 | . | 开发时间 | 2025‑05‑30 | . | 最后修改 | 2025‑06‑17（完善模块结构与示例脚本，支持自动通道配置） | . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-模块简介"
+  },"107": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "🌟 功能描述",
+    "content": "✅ 支持任意通道加速度信号分析（默认第4通道） ✅ 非平稳振动信号分解：EEMD 提取主要模态 ✅ 每个 IMF 可视化分析：时域波形 + 单边幅值谱 ✅ 自动通道验证与错误检查：保障鲁棒性 ✅ 可视化输出美观统一，适配报告排版 . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-功能描述"
+  },"108": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "📂 输入数据说明",
+    "content": ". | 文件格式：空格或制表符分隔的纯文本 .txt | 列结构：time | ch1 | ch2 | … | chN | 采样点数：默认取前 3000 点（可自定义） | 采样频率 fs：默认为 50 Hz（需指定） | 通道编号：从 0 开始计数（默认分析第4列） | . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-输入数据说明"
+  },"109": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python ≥ 3.9.16 | 依赖库 . | numpy ≥ 2.2.0 | matplotlib ≥ 3.9.4 | PyEMD ≥ 1.6.4 | . | . 📝 模块兼容 Jupyter 和命令行运行环境 . ",
+    "url": "/acc_eemd_decomposition/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#️-运行环境与依赖"
+  },"110": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖： . pip install -r requirements.txt . 📁 安装模块： . pip install -e . ✅ 运行示例： . python example.py . 或在代码中调用： . \"\"\"Minimal demo for acc_eemd.\"\"\" from pathlib import Path import pandas as pd # only for demonstration of path resolution from acc_eemd_decomposition import eemd_main # Assume data file placed at project root data_file = f\"datasets/2023-04-24_01_00_2min.txt\" # Run full pipeline eemd_main(data_path=str(data_file)) . ",
+    "url": "/acc_eemd_decomposition/README.html#%EF%B8%8F-%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#️-快速使用说明"
+  },"111": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "🔢 主要流程",
+    "content": ". | 读取并验证数据 load_and_preprocess | 执行 EEMD 分解 perform_eemd | 可视化输出 plot_imfs：每个 IMF 的时域图与频谱图（单边 FFT） | 参数灵活可控：支持采样点数、通道编号、EEMD 噪声参数自定义 | . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-主要流程"
+  },"112": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "💾 输出结果说明",
+    "content": "| 类型 | 描述 | . | 图像 PNG | 每个 IMF 的波形与频谱图 | . | 控制台输出 | 分解通道、IMF 数量、信号长度等信息 | . | 返回对象 | imfs: np.ndarray 类型二维数组 | . 图例示例1（IMF + FFT）： . 图例示例2（IMF + FFT）： . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-输出结果说明"
+  },"113": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "🔁 后续优化建议",
+    "content": ". | 支持生命线平台的在线通道数据处理自动化流程 | 输出每个 IMF 的频率中心和能量比重 | 增加对 IMF 能量谱的统计分析 | 可扩展为 Dash / Streamlit 可交互平台 . 返回首页 . | . ",
+    "url": "/acc_eemd_decomposition/README.html#-%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html#-后续优化建议"
+  },"114": {
+    "doc": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "title": "特征分析-加速度信号分解模块（acc_eemd_decomposition）",
+    "content": " ",
+    "url": "/acc_eemd_decomposition/README.html",
+    
+    "relUrl": "/acc_eemd_decomposition/README.html"
+  },"115": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "🌉 模态频率预警模型",
+    "content": "| 城市生命线安全工程 | 模态频率监测 | 多级预警识别 | 趋势分析与可视化 | . ",
+    "url": "/freq_alert/README.html#-%E6%A8%A1%E6%80%81%E9%A2%91%E7%8E%87%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/freq_alert/README.html#-模态频率预警模型"
+  },"116": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "📚 项目背景",
+    "content": "桥梁结构的模态频率作为衡量其整体刚度和动力性能的重要指标，对结构安全评估具有显著意义。在长期服役过程中，模态频率可能因结构损伤、材料老化、支座异常等问题而发生下降，若下降幅度超过合理阈值，则可能预示结构性能退化或损伤风险。 . 本模块面向桥梁结构健康监测系统，通过提取监测频率数据的变化趋势，构建基于基准频率的多级预警模型，自动识别频率下降异常点，并实现可视化展示。支持批量频率文件处理、多级预警等级划分、趋势图自动绘制，适用于城市桥梁群的高频监测与智能预警。 . ",
+    "url": "/freq_alert/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/freq_alert/README.html#-项目背景"
+  },"117": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "📌 模型简介",
+    "content": "该模块为 城市生命线工程监测平台桥梁预警体系核心子模块Ⅷ：模态频率预警模型，旨在通过频率与基准值的对比分析，实现模态性能退化的早期识别与分级预警。 . | 模块名称：freq_alert | 模型名称：桥梁模态频率预警模型 | 作者：肖图刚 | 开发时间：2025年6月10日 | 最后修改：2025年6月12日 | . ",
+    "url": "/freq_alert/README.html#-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/freq_alert/README.html#-模型简介"
+  },"118": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "🌟 功能描述",
+    "content": "✅ 支持批量读取监测频率数据（CSV 格式，自动解析时间戳） ✅ 基于基准频率计算下降幅度，划分正常 / 三级 / 二级 / 一级预警等级 ✅ 输出完整的预警分析表格（时间、频率、下降比例、预警等级） ✅ 自动绘制频率变化趋势图与各级预警阈值线 ✅ 控制台打印各级预警点列表（含频率数值和时间点） ✅ 适配多种监测频率数据文件，便于集成与部署 . ",
+    "url": "/freq_alert/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/freq_alert/README.html#-功能描述"
+  },"119": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "📂 输入数据说明",
+    "content": ". | 格式：本地 CSV 文件（带列名），命名格式如 idmodal_7Z_1_2023-04-21_21_00.csv | 字段结构要求： | . | 序号 | 含义 | 示例 | . | 第1行 | 列名 | - | . | 第2行 | 第一阶频率值 | 0.1925（Hz） | . | 数据来源：结构加速度响应分析提取的模态频率（自动识别结果，依赖于自动模态识别模块-autossi） | 采样间隔：1小时及更长 | 时间信息提取：从文件名中自动解析（建议文件名包含年月日时分信息） | . ",
+    "url": "/freq_alert/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/freq_alert/README.html#-输入数据说明"
+  },"120": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python：≥ 3.9.16 | 依赖库： . | pandas ≥ 2.2.3 | numpy ≥ 1.26.4 | matplotlib ≥ 3.9.4 | tabulate ≥ 0.9.0 | . | . 📝 使用建议 . | 模型中基准频率、各级预警下降比例均可灵活配置； | 可与桥梁巡检或支座/裂缝等其他监测信息联合使用，实现预警交叉验证； | 支持将频率文件自动命名输出、嵌入定时任务中实现周期性批量分析。 | . ",
+    "url": "/freq_alert/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/freq_alert/README.html#️-运行环境与依赖"
+  },"121": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "🛠️ 快速使用说明",
+    "content": "📁 安装依赖： . pip install -r requirements.txt . 📁 安装模块： . cd py_modu/freq_alert pip install . ✅ 安装成功： . Successfully installed freq_alert-0.1.0 . ⚙️ 运行示例（example.py）： . from freq_alert import batch_process_files, plot_frequency_alerts, print_alert_summary BASE_FREQ = 0.20 DATA_DIR = \"./datasets\" PATTERN = \"idmodal_*.csv\" df_result = batch_process_files(DATA_DIR, PATTERN, BASE_FREQ) print_alert_summary(df_result) # 打印预警点信息 plot_frequency_alerts(df_result, BASE_FREQ) # 绘图 . ",
+    "url": "/freq_alert/README.html#%EF%B8%8F-%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/freq_alert/README.html#️-快速使用说明"
+  },"122": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "💾 输出结果说明",
+    "content": ". | 输出文件 . | freq_alert_result.csv：频率下降分析结果 | freq_alert_plot.png：频率变化趋势图 | . | 输出字段说明 | . | timestamp | freq (Hz) | drop (%) | alert_level | . | 2025-06-10 11:00 | 0.1892 | 5.40 | 三级 | . | 2025-06-11 11:00 | 0.1728 | 13.60 | 二级 | . | 2025-06-12 11:00 | 0.1682 | 16.10 | 一级 | . | 控制台输出：支持 tabulate 表格美化输出，分预警等级汇总 | . ===== 各级频率下降预警统计信息 ===== 【一级预警】 (数量: 2) +------------------+-------------+ | 时间点 | 频率 (Hz) | +==================+=============+ | 2023-04-22 01:00 | 0.152768 | +------------------+-------------+ | 2023-04-24 01:00 | 0.110871 | +------------------+-------------+ 【二级预警】 (数量: 0) 无预警。 【三级预警】 (数量: 0) 无预警。 . | 频率趋势图展示说明 . | 黑色虚线：基准频率线 | 蓝色/橙色/红色线：三级、二级、一级预警阈值线 | 绿色曲线：实际频率时序数据 | . | . 🔎 说明：本模块当前基于 其他项目的离线模态频率监测数据 进行开发和验证，后续计划替换为城市生命线平台的在线实时数据，以实现更加高效、动态的结构健康监测与预警功能。模型支持多级频率下降预警，阈值灵活可调，适用于桥梁结构性能退化的早期识别。 . ",
+    "url": "/freq_alert/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/freq_alert/README.html#-输出结果说明"
+  },"123": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "🔁 后续优化建议",
+    "content": ". | ✅ 引入频率平滑处理算法（如滑动平均、小波去噪等） | ✅ 支持 Excel / JSON 等多格式数据输入 | ✅ 增加异常值剔除机制（如统计检测或机器学习方法） | ✅ 对接实时数据流，实现在线频率变化监测与滚动预警 | ✅ 拓展支持多个频率通道与多阶模态联合预警 . 返回首页 . | . ",
+    "url": "/freq_alert/README.html#-%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/freq_alert/README.html#-后续优化建议"
+  },"124": {
+    "doc": "模态频率下降预警模块（freq_alert）",
+    "title": "模态频率下降预警模块（freq_alert）",
+    "content": " ",
+    "url": "/freq_alert/README.html",
+    
+    "relUrl": "/freq_alert/README.html"
+  },"125": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "📊 异常识别与处理",
+    "content": "| 城市生命线安全工程 | 监测数据预处理 | 异常数据识别 | 滑动中位数与MAD 方法 | 数据补全与可视化 | . ",
+    "url": "/data_preprocessing/README.html#-%E5%BC%82%E5%B8%B8%E8%AF%86%E5%88%AB%E4%B8%8E%E5%A4%84%E7%90%86",
+    
+    "relUrl": "/data_preprocessing/README.html#-异常识别与处理"
+  },"126": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "📚 项目背景",
+    "content": "在桥梁结构健康监测系统中，采集到的温度、应变、位移等传感器数据可能由于设备漂移、环境扰动或通信故障出现突变或缺失，直接影响后续的数据建模与预警分析。 . 为提升监测数据的可信度和稳定性，构建本模块用于自动识别异常点并进行数据清洗与补全，为城市桥梁生命线安全平台提供基础数据保障。 . ",
+    "url": "/data_preprocessing/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/data_preprocessing/README.html#-项目背景"
+  },"127": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "📌 模块简介",
+    "content": "本模块为城市生命线安全工程监测平台桥梁专项的数据分析子模块：异常识别与处理，支持单通道时间序列的异常点识别与自动补全，采用鲁棒滑动中位数与MAD的迭代方法，结合插值与前后填充方法进行数据补全，支持图像与终端表格输出。 . | 项目 | 内容 | . | 模块名称 | data_preprocessing | . | 核心功能 | 滑动中位数+MAD异常检测、数据插值补全、图表输出 | . | 典型应用 | 结构健康数据预处理、预警建模前清洗步骤、图形展示 | . | 作者 | 肖图刚 | . | 开发时间 | 2025‑06‑24 | . | 最后修改 | 2025‑06‑24（新增异常点表格输出与方法信息提示） | . | 支持平台 | 城市生命线安全工程监测平台 / 地市级桥梁结构健康系统 | . ",
+    "url": "/data_preprocessing/README.html#-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/data_preprocessing/README.html#-模块简介"
+  },"128": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "🌟 功能描述",
+    "content": "✅ 基于滑动中位数与MAD的鲁棒异常检测（多轮迭代剔除） . ✅ 数据修复功能：插值 + 向前向后填充组合补全缺失 . ✅ 图像对比可视化：原始数据、清洗数据与异常点同图显示 . ✅ 终端表格输出异常点详情：含时间与数值，支持 tabulate 美化格式 . ✅ 支持中文输出与图例美化（内置中文字体设置） . ✅ 模块化封装，便于外部调用与集成 . ",
+    "url": "/data_preprocessing/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/data_preprocessing/README.html#-功能描述"
+  },"129": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "📂 输入数据说明",
+    "content": ". | 文件格式：CSV | 时间列名：time | 数据列名：value | . | 时间 | value |   | . | 2025-06-01 00:00:00 | 15.23 |   | . | 2025-06-01 01:00:00 | 15.27 |   | . | 2025-06-01 02:00:00 | 65.33 | ← 异常点 | . ",
+    "url": "/data_preprocessing/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/data_preprocessing/README.html#-输入数据说明"
+  },"130": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python ≥ 3.9 | . | 库 | 版本要求 | . | numpy | ≥ 2.0.2 | . | pandas | ≥ 2.2.3 | . | matplotlib | ≥ 3.9.0 | . | tabulate（可选） | ≥ 0.9.0 | . 安装依赖： . pip install -r requirements.txt . ",
+    "url": "/data_preprocessing/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/data_preprocessing/README.html#️-运行环境与依赖"
+  },"131": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "🛠️ 使用说明",
+    "content": "安装模块 . pip install -e . 快速运行示例 . python example.py . 或在其他脚本中调用（example.py）： . from pathlib import Path import pandas as pd from data_preprocessing import preprocess_series, plot_comparison, print_outliers def main(): csv_path = \"datasets/temp_ori_1week.csv\" out_path = \"figures/异常识别与处理曲线.png\" out_csv = \"output/预处理后的数据.csv\" df = pd.read_csv(csv_path) ts = pd.to_datetime(df[\"time\"]) series = pd.Series(df[\"value\"].values, index=ts) cleaned, outliers, outlier_method_name, fill_method_name = preprocess_series( series, outlier_thresh=3, window_size=24, min_amplitude=1.0 ) print(f\"📌 当前异常检测方法：{outlier_method_name}\") print(f\"📌 当前缺失数据补全方法：{fill_method_name}\") plot_comparison(series.index, series, cleaned, outliers, out_path=out_path) print_outliers(series.index, series, outliers) Path(out_csv).parent.mkdir(exist_ok=True) pd.DataFrame({ \"时间\": series.index, \"原始值\": series.values, \"清洗后值\": cleaned.values, \"是否离群\": outliers.values.astype(int) }).to_csv(out_csv, index=False) print(f\"✅ 清洗结果已保存至: {Path(out_csv).resolve()}\") if __name__ == \"__main__\": main() . ",
+    "url": "/data_preprocessing/README.html#%EF%B8%8F-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/data_preprocessing/README.html#️-使用说明"
+  },"132": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "🔢 模块主要流程",
+    "content": ". | 读取时间序列数据（CSV） | 基于滑动中位数 + MAD 检测异常点（可设置滑窗大小、阈值） | 多轮迭代清洗异常点并补全数据（插值 + 填充） | 输出清洗前后对比图像 | 打印异常点详细表格 | 保存清洗结果到CSV | . ",
+    "url": "/data_preprocessing/README.html#-%E6%A8%A1%E5%9D%97%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/data_preprocessing/README.html#-模块主要流程"
+  },"133": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "📈 输出结果说明",
+    "content": ". | 清洗图像：位于 figures/异常识别与处理曲线.png | 清洗数据CSV：位于 output/预处理后的数据.csv | 终端输出：打印包含异常检测方法、补全方法说明、异常点表格 | . 示例表格输出： . 📌 当前异常检测方法：鲁棒滑动中位数+MAD迭代检测 📌 当前缺失数据补全方法：时间插值 + bfill + ffill ✅ 图像已保存至: D:\\pycode\\lifeline_bridge_alert\\py_modu\\data_preprocessing\\figures\\异常识别与处理曲线.png 🛑 检测到的异常点数量：68 个 📋 异常点详细信息如下： +----------------------------+----------+ | 时间 | 异常值 | +============================+==========+ | 2024-04-01 00:01:59.666000 | 7.9 | +----------------------------+----------+ | 2024-04-01 00:03:47.571000 | 8.1 | +----------------------------+----------+ | 2024-04-01 00:05:27.705000 | 7.9 | +----------------------------+----------+ | 2024-04-01 02:38:50.455000 | 4.8 | +----------------------------+----------+ | 2024-04-01 03:04:50.745000 | 1.2 | +----------------------------+----------+ | 2024-04-01 03:05:02.012000 | 10.4 | +----------------------------+----------+ | 2024-04-01 03:05:05.317000 | 0.7 | +----------------------------+----------+ | 2024-04-01 03:17:37.660000 | 4.5 | +----------------------------+----------+ | 2024-04-01 03:17:39.881000 | 1.7 | +----------------------------+----------+ | 2024-04-01 03:35:43.352000 | 5.4 | +----------------------------+----------+ | 2024-04-01 04:10:26.580000 | 4.6 | +----------------------------+----------+ | 2024-04-01 04:13:50.868000 | -1 | +----------------------------+----------+ | 2024-04-01 04:13:53.203000 | -1 | +----------------------------+----------+ | 2024-04-01 04:13:56.524000 | 3.9 | +----------------------------+----------+ | 2024-04-01 04:14:02.571000 | 4.3 | +----------------------------+----------+ | 2024-04-01 04:18:35.679000 | 5.3 | +----------------------------+----------+ | 2024-04-01 04:39:06.037000 | 2.1 | +----------------------------+----------+ | 2024-04-01 04:56:22.928000 | 4.9 | +----------------------------+----------+ | 2024-04-01 05:04:08.940000 | 4.7 | +----------------------------+----------+ | 2024-04-01 05:04:19.305000 | 1.4 | +----------------------------+----------+ | 2024-04-01 05:07:01.647000 | -3.4 | +----------------------------+----------+ | 2024-04-01 05:07:08.566000 | -3.9 | +----------------------------+----------+ | 2024-04-01 05:07:12.069000 | -3.4 | +----------------------------+----------+ | 2024-04-01 05:07:29.267000 | 5.9 | +----------------------------+----------+ | 2024-04-01 05:07:31.710000 | 1.7 | +----------------------------+----------+ | 2024-04-01 05:07:34.569000 | -4.3 | +----------------------------+----------+ | 2024-04-01 05:10:16.307000 | 1.5 | +----------------------------+----------+ | 2024-04-01 05:11:59.141000 | 8.9 | +----------------------------+----------+ | 2024-04-01 05:15:12.899000 | 0.1 | +----------------------------+----------+ | 2024-04-01 05:32:41.679000 | 0.4 | +----------------------------+----------+ | 2024-04-01 05:35:13.926000 | 7.4 | +----------------------------+----------+ | 2024-04-01 05:35:29.621000 | -4.7 | +----------------------------+----------+ | 2024-04-01 05:35:31.489000 | -4.2 | +----------------------------+----------+ | 2024-04-01 05:41:47.965000 | 0.2 | +----------------------------+----------+ | 2024-04-01 05:56:23.782000 | 2.1 | +----------------------------+----------+ | 2024-04-01 05:56:27.029000 | 1.2 | +----------------------------+----------+ | 2024-04-01 05:58:51.962000 | -3.2 | +----------------------------+----------+ | 2024-04-01 05:59:03.169000 | 10 | +----------------------------+----------+ | 2024-04-01 06:06:31.034000 | 0.3 | +----------------------------+----------+ | 2024-04-01 06:16:30.620000 | 0.7 | +----------------------------+----------+ | 2024-04-01 06:25:33.698000 | 4.2 | +----------------------------+----------+ | 2024-04-01 06:30:30.276000 | 0.8 | +----------------------------+----------+ | 2024-04-01 06:30:34.157000 | -2.5 | +----------------------------+----------+ | 2024-04-01 06:49:35.503000 | -2.2 | +----------------------------+----------+ | 2024-04-01 06:49:38.647000 | -2.2 | +----------------------------+----------+ | 2024-04-01 06:49:57.899000 | 5.7 | +----------------------------+----------+ | 2024-04-01 06:57:24.128000 | -1.5 | +----------------------------+----------+ | 2024-04-01 06:57:35.591000 | 3.6 | +----------------------------+----------+ | 2024-04-01 07:17:02.714000 | 0.9 | +----------------------------+----------+ | 2024-04-01 07:21:13.552000 | 1.3 | +----------------------------+----------+ | 2024-04-01 07:33:36.218000 | -1.9 | +----------------------------+----------+ | 2024-04-01 07:35:35.549000 | 1.6 | +----------------------------+----------+ | 2024-04-01 07:57:37.147000 | -2.3 | +----------------------------+----------+ | 2024-04-01 07:57:49.856000 | 1.8 | +----------------------------+----------+ | 2024-04-01 07:57:57.467000 | 5.6 | +----------------------------+----------+ | 2024-04-01 08:07:15.540000 | 4 | +----------------------------+----------+ | 2024-04-01 08:14:26.695000 | -0.9 | +----------------------------+----------+ | 2024-04-01 08:14:45.982000 | 3.7 | +----------------------------+----------+ | 2024-04-01 08:14:47.771000 | -3.7 | +----------------------------+----------+ | 2024-04-01 08:14:51.262000 | -2.3 | +----------------------------+----------+ | 2024-04-01 08:15:14.566000 | 9.5 | +----------------------------+----------+ | 2024-04-01 08:15:17.393000 | -2.7 | +----------------------------+----------+ | 2024-04-01 08:27:43.900000 | 1 | +----------------------------+----------+ | 2024-04-01 08:30:27.238000 | 2.6 | +----------------------------+----------+ | 2024-04-01 08:55:57.133000 | 2.7 | +----------------------------+----------+ | 2024-04-01 08:56:11.007000 | 2.7 | +----------------------------+----------+ | 2024-04-01 08:56:16.461000 | 3.1 | +----------------------------+----------+ | 2024-04-01 08:57:29.463000 | 2.7 | +----------------------------+----------+ ✅ 清洗结果已保存至: D:\\pycode\\lifeline_bridge_alert\\py_modu\\data_preprocessing\\output\\预处理后的数据.csv . 示例输出图表： . ",
+    "url": "/data_preprocessing/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/data_preprocessing/README.html#-输出结果说明"
+  },"134": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "🔁 拓展建议",
+    "content": ". | 支持生命线平台的在线数据流 | 支持多通道批量清洗接口（多传感器并行） | 支持滑动 GMM 异常检测与可自定义检测规则 | 集成流式数据处理（用于边采边清洗的实时处理场景） | 拓展前端接口调用（如 Streamlit） . 返回首页 . | . ",
+    "url": "/data_preprocessing/README.html#-%E6%8B%93%E5%B1%95%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/data_preprocessing/README.html#-拓展建议"
+  },"135": {
+    "doc": "数据异常识别与处理模块（data_preprocessing）",
+    "title": "数据异常识别与处理模块（data_preprocessing）",
+    "content": " ",
+    "url": "/data_preprocessing/README.html",
+    
+    "relUrl": "/data_preprocessing/README.html"
+  },"136": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "📉 趋势分析",
+    "content": "| 城市生命线安全工程  |  监测数据趋势建模 | SARIMA 时序预测 | 响应变化特征识别 | . ",
+    "url": "/trend_analysis/README.html#-%E8%B6%8B%E5%8A%BF%E5%88%86%E6%9E%90",
+    
+    "relUrl": "/trend_analysis/README.html#-趋势分析"
+  },"137": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "📚 项目背景",
+    "content": "在桥梁等城市生命线工程设施的长期运行过程中，传感器会持续采集关键结构或环境响应的时间序列数据。如何对这类数据的长期变化趋势进行有效建模与预测，是 省级监测平台中保障预判能力与辅助评估能力的核心功能之一 。 . 根据平台功能要求，趋势分析模块应具备以下两大能力： . | 预测未来一段时间内的正常波动范围 ，通过与实际监测数据对比，评估其是否处于安全状态，识别潜在异常波动； | 提取时间序列特征变化趋势 ，包括长期趋势、周期变动、季节性波动及短期扰动，从而为巡检和维修提供支撑。 | . 本模块基于 SARIMA（季节性自回归积分滑动平均）模型 ，可对 任意单变量监测数据进行趋势建模与 24 步（如 24 小时）滚动预测 ，输出包括预测区间、趋势曲线、置信带图像等关键结果，便于用户进行直观判断与趋势对比分析。 . ",
+    "url": "/trend_analysis/README.html#-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF",
+    
+    "relUrl": "/trend_analysis/README.html#-项目背景"
+  },"138": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "📌 模块简介",
+    "content": "本模块为 城市生命线安全工程监测平台桥梁专项的数据分析子模块：趋势分析 ，适用于各类连续型单变量监测数据（如应变、位移、温度等）的长期趋势识别与短期预测。 . | 项目 | 内容 | . | 模块名称 | trend_analysis | . | 核心功能 | SARIMA建模、24步趋势预测、预测区间绘图、历史对比分析 | . | 典型应用 | 桥梁主梁挠度趋势分析、支座位移趋势预测、应变数据安全评估等 | . | 作者 | 肖图刚 | . | 开发时间 | 2025‑06‑23 | . | 支持平台 | 省级城市生命线工程监测平台 / 地市级桥梁健康监测平台 | . ",
+    "url": "/trend_analysis/README.html#-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B",
+    
+    "relUrl": "/trend_analysis/README.html#-模块简介"
+  },"139": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "🌟 功能描述",
+    "content": "✅  趋势建模 ：采用 SARIMA 模型，支持周期性与趋势性成分 . ✅  24 步前向预测 ：例如 24 小时数据预测，贴合日常调度需求 . ✅  置信区间输出 ：展示 95% 预测区间，辅助安全范围评估 . ✅  趋势可视化 ：历史数据 + 拟合值 + 预测区间一图展示 . ✅  异常识别辅助 ：可用于比对预测区间与实测值，判定是否超出正常波动 . ✅  可扩展性强 ：支持修改预测步长、SARIMA 参数，适应不同任务 . ",
+    "url": "/trend_analysis/README.html#-%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0",
+    
+    "relUrl": "/trend_analysis/README.html#-功能描述"
+  },"140": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "📂 输入数据说明",
+    "content": ". | 格式 ：CSV 文件，包含以下字段： | time：时间戳列，推荐为 ISO 8601 格式（如 2024-06-01 08:00:00） | value：对应监测值 | 频率要求 ：建议为 固定 1 小时间隔（或可重采样为 1 小时） | 缺失值处理 ：自动重采样并剔除缺失值 | 样本长度 ：建议不少于一个月的连续数据（≥ 720 条） | . ",
+    "url": "/trend_analysis/README.html#-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/trend_analysis/README.html#-输入数据说明"
+  },"141": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "⚙️ 运行环境与依赖",
+    "content": ". | Python ≥ 3.9 | 依赖库 | . | 库 | 版本要求 | . | numpy | ≥ 2.0.2 | . | pandas | ≥ 2.2.3 | . | matplotlib | ≥ 3.9.4 | . | statsmodels | ≥ 0.14.0 | . ",
+    "url": "/trend_analysis/README.html#%EF%B8%8F-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96",
+    
+    "relUrl": "/trend_analysis/README.html#️-运行环境与依赖"
+  },"142": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "🛠️ 使用说明",
+    "content": "安装依赖 . pip install -r requirements.txt . 安装模块 . pip install -e . 快速运行 . python trend_forecast.py . 示例代码（example.py） . \"\"\"Minimal example for trend_analysis\"\"\" from pathlib import Path from trend_analysis import run_pipeline csv_file = Path(\"datasets/def_1month.csv\") run_pipeline(csv_file) . 默认设置将： . | 从 datasets/def_1month.csv 读取 1 小时数据； | 拟合 SARIMA 模型，输出 24 步预测； | 自动绘图并保存至 figures/趋势分析与预测曲线.png； | 将预测结果保存至 output/24h预测值.csv | . ",
+    "url": "/trend_analysis/README.html#%EF%B8%8F-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/trend_analysis/README.html#️-使用说明"
+  },"143": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "🔢 模块主要流程",
+    "content": ". | 加载数据 ：读取时间序列，进行 1 小时重采样 | SARIMA建模 ：默认配置为 (1,1,1) × (1,1,1,24) | 趋势预测 ：输出未来 24 步预测均值与 95% 置信区间 | 图像绘制 ：一张图展示历史数据、预测均值及置信区间 | 结果导出 ：输出预测数据 CSV 与图像 | . ",
+    "url": "/trend_analysis/README.html#-%E6%A8%A1%E5%9D%97%E4%B8%BB%E8%A6%81%E6%B5%81%E7%A8%8B",
+    
+    "relUrl": "/trend_analysis/README.html#-模块主要流程"
+  },"144": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "📈 输出结果说明",
+    "content": "| 类型 | 内容说明 | 示例文件 | . | 趋势图像 | 历史数据 + 预测均值 + 置信区间 | figures/趋势分析与预测曲线.png | . | 预测结果 CSV | 含预测均值与置信区间 | output/24h预测值.csv | . 图像示例： . | 黑色线：最近一周历史数据 | 蓝色线：未来 24 小时预测值 | 浅蓝阴影：95% 置信区间 | . ",
+    "url": "/trend_analysis/README.html#-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%E8%AF%B4%E6%98%8E",
+    
+    "relUrl": "/trend_analysis/README.html#-输出结果说明"
+  },"145": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "📊 示例输出",
+    "content": "控制台输出： . 2025-06-23 16:58:36 [INFO] 图已保存至 D:\\pycode\\lifeline_bridge_alert\\py_modu\\trend_analysis\\figures\\趋势分析与预测曲线.png 2025-06-23 16:58:36 [INFO] 预测结果已保存至 D:\\pycode\\lifeline_bridge_alert\\py_modu\\trend_analysis\\output\\24h预测值.csv | 预测均值 | 下限 (95%) | 上限 (95%) |------------|--------------|--------------| -15.234 | -15.467 | -15.001 | -15.237 | -15.693 | -14.781 | -15.204 | -15.876 | -14.531 | -15.157 | -16.034 | -14.280 | -15.117 | -16.183 | -14.050 | -15.070 | -16.311 | -13.829 | -15.041 | -16.443 | -13.638 | -15.017 | -16.569 | -13.464 | -15.008 | -16.700 | -13.315 | -15.002 | -16.826 | -13.179 | -15.005 | -16.951 | -13.058 | -15.011 | -17.075 | -12.948 | -15.019 | -17.194 | -12.845 | -15.018 | -17.298 | -12.737 | -15.034 | -17.416 | -12.653 | -15.036 | -17.515 | -12.557 | -15.044 | -17.617 | -12.472 | -15.070 | -17.733 | -12.407 | -15.124 | -17.874 | -12.373 | -15.188 | -18.023 | -12.352 | -15.308 | -18.226 | -12.391 | -15.287 | -18.285 | -12.289 | -15.246 | -18.322 | -12.170 | -15.202 | -18.354 | -12.050 | . 图表输出： . ",
+    "url": "/trend_analysis/README.html#-%E7%A4%BA%E4%BE%8B%E8%BE%93%E5%87%BA",
+    
+    "relUrl": "/trend_analysis/README.html#-示例输出"
+  },"146": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "🔍 应用场景举例",
+    "content": ". | 主梁下挠趋势持续下降 → 可提前发出维护预警 | 位移或温度波动超出预测区间 → 可能存在结构性异常 | 预测区间接近报警阈值 → 可用于预防性巡检与调度 | . ",
+    "url": "/trend_analysis/README.html#-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%BE%E4%BE%8B",
+    
+    "relUrl": "/trend_analysis/README.html#-应用场景举例"
+  },"147": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "💡 模块拓展建议",
+    "content": ". | 支持动态数据流：接入生命线平台提取的在线数据 | 增加多变量趋势建模 ：集成环境变量、车辆荷载等多源数据,同时支持位移、应变、裂缝、索力等结构监测数据 | 支持滑窗预测 ：形成每日更新的动态预测能力 | 集成 Streamlit 可视化 ：供平台前端选择传感器后自动分析 | 扩展异常评分 ：加入 Z 分数、残差等异常检测指标 . 返回首页 . | . ",
+    "url": "/trend_analysis/README.html#-%E6%A8%A1%E5%9D%97%E6%8B%93%E5%B1%95%E5%BB%BA%E8%AE%AE",
+    
+    "relUrl": "/trend_analysis/README.html#-模块拓展建议"
+  },"148": {
+    "doc": "趋势分析模块（trend_analysis）",
+    "title": "趋势分析模块（trend_analysis）",
+    "content": " ",
+    "url": "/trend_analysis/README.html",
+    
+    "relUrl": "/trend_analysis/README.html"
+  },"149": {
+    "doc": "🏗️ 生命线平台-桥梁专项模型开发文档",
+    "title": "📚 生命线平台-桥梁专项技术文档索引",
+    "content": "欢迎访问城市生命线安全工程监测平台相关的桥梁数据分析与预警模型说明文档。 本文档涵盖以下两大类模块： . | 📊 数据分析方法 | 🚨 预警模型 | . ",
+    "url": "/#-%E7%94%9F%E5%91%BD%E7%BA%BF%E5%B9%B3%E5%8F%B0-%E6%A1%A5%E6%A2%81%E4%B8%93%E9%A1%B9%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3%E7%B4%A2%E5%BC%95",
+    
+    "relUrl": "/#-生命线平台-桥梁专项技术文档索引"
+  },"150": {
+    "doc": "🏗️ 生命线平台-桥梁专项模型开发文档",
+    "title": "📊 数据分析方法",
+    "content": "用于对桥梁结构响应数据进行处理、降维、特征提取与频谱分析等。 . | 📈 特征分析-加速度信号分解模块（acc_eemd_decomposition） ➤ 基于 EEMD 分解加速度信号以提取关键模态特征。 . | 🔍 特征分析-PCA 特征降维模块（feature_analysis） ➤ 使用主成分分析（PCA）对高维传感器数据降维。 . | 📊 加速度频谱分析模块（acc_spectral_analyse） ➤ 对桥梁加速度数据进行单通道频谱分析、多时段频谱分析、多设备频谱分析和滤波分析等。 . | 🧠 自动模态频率识别模块（autossi） ➤ 利用SSI和聚类算法自动提取模态频率。 . | 🔗 相关性分析模块（correlation_analysis） ➤ 分析结构响应与环境因素之间的相关性。 . | 📊 统计分析模块（stats_analysis） ➤ 提供频率统计、概率拟合、最大值最小值等统计功能。 . | 🧹 数据异常识别与处理模块（data_preprocessing） ➤ 基于滑动中位数与 MAD 方法进行数据异常识别与插值处理。 . | 📉 趋势分析模块（trend_analysis） ➤ 识别结构长期变化趋势，如应变漂移、挠度发展、频率衰减。 . | . ",
+    "url": "/#-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95",
+    
+    "relUrl": "/#-数据分析方法"
+  },"151": {
+    "doc": "🏗️ 生命线平台-桥梁专项模型开发文档",
+    "title": "🚨 预警模型",
+    "content": "用于实现关键结构指标的动态监测与预警。 . | 🧱 支座脱空预警模块（bearing_alert） ➤ 判断支座反力变化是否超出正常范围，识别脱空风险。 . | 📐 伸缩缝位移异常预警模块（joint_displacement_alert） ➤ 基于温度-位移关系构建动态阈值模型，识别异常伸缩缝行为。 . | 📉 模态频率下降预警模块（freq_alert） ➤ 基于模态频率对比模型识别结构刚度降低迹象。 . | 🏗️ 主梁持续下挠预警模块（progressive_deflection_alert） ➤ 利用时间序列趋势识别主梁下挠持续发展状态。 . | 🧩 混凝土主梁裂缝超限预警模块（crack_detection_alert） ➤ 基于传感器反馈识别裂缝宽度/速度的异常增长。 . | . 🛠 开发中模块 . | 🚛 超载预警模块（overload_alert） | 🚢 船撞预警模块（ship_collision_alert） | 🔄 主梁防倾覆预警模块（anti_overturning_alert） | . ",
+    "url": "/#-%E9%A2%84%E8%AD%A6%E6%A8%A1%E5%9E%8B",
+    
+    "relUrl": "/#-预警模型"
+  },"152": {
+    "doc": "🏗️ 生命线平台-桥梁专项模型开发文档",
+    "title": "🏗️ 生命线平台-桥梁专项模型开发文档",
+    "content": " ",
+    "url": "/",
+    
+    "relUrl": "/"
+  }
+}
