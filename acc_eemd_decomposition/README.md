@@ -1,3 +1,9 @@
+---
+title: 特征分析-加速度信号分解
+parent: 数据分析方法
+nav_order: 1
+---
+
 # 🧩 特征分析 - 加速度 EEMD 分解模块
 
 > 城市生命线安全工程 | 加速度特征分析 | IMF 模态识别 | EEMD + FFT | 结构异常识别
@@ -134,3 +140,4 @@ eemd_main(data_path=str(data_file))
 2. 输出每个 IMF 的频率中心和能量比重
 3. 增加对 IMF 能量谱的统计分析
 4. 可扩展为 Dash / Streamlit 可交互平台
+   [返回首页](../index.md)

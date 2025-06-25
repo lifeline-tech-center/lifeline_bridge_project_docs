@@ -1,3 +1,8 @@
+---
+title: 统计分析
+parent: 数据分析方法
+nav_order: 6
+---
 # 📈 统计分析模块
 
 > 城市生命线安全工程 | 历史监测数据统计 | 分布拟合与检验 | 多传感器对比分析 | 高斯混合分布
@@ -178,3 +183,4 @@ run_pipeline(csv, sensors, time_range, out_dir="reports",fig_dir=fig_dir, plot=T
 2. **滑窗统计与趋势检测**：分析监测量的演化过程
 3. **集成 API 接口**：供生命线平台前端选择传感器后调用
 4. **支持交互可视化**：结合 Streamlit/Dash 实现在线分析工具
+[返回首页](../index.md)

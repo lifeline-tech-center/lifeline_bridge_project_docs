@@ -1,3 +1,8 @@
+---
+title: 加速度频谱分析
+parent: 数据分析方法
+nav_order: 3
+---
 # ⚡️ 加速度频谱分析模块 
 
 > 城市生命线安全工程 | 加速度频谱分析 | 加速度滤波分析 |多设备频谱分析| 多时段对比与可视化
@@ -170,3 +175,4 @@ plot_fft_comparison(t, x_raw, x_filt, FS, CHANNELS)
 2. 引入 Welch、PSD 等功率谱密度估计方法
 3. 支持输出 SVG 和矢量 PDF 以适配报告排版
 4. 可拓展为 Dash / Streamlit 前端，实现交互式频谱浏览
+   [返回首页](../index.md)

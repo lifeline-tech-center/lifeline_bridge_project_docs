@@ -9,7 +9,7 @@ nav_order: 1
 欢迎访问**城市生命线安全工程监测平台**相关的桥梁数据分析与预警模型说明文档。  
 本文档涵盖以下两大类模块：
 
-- [� 生命线平台-桥梁专项技术文档索引](#-生命线平台-桥梁专项技术文档索引)
+- [📚 生命线平台-桥梁专项技术文档索引](#-生命线平台-桥梁专项技术文档索引)
   - [📊 数据分析方法](#-数据分析方法)
   - [🚨 预警模型](#-预警模型)
     - [🛠 开发中模块](#-开发中模块)
@@ -38,7 +38,7 @@ nav_order: 1
 - [📊 统计分析模块（stats_analysis）](./stats_analysis/README.md)  
   ➤ 提供频率统计、概率拟合、最大值最小值等统计功能。
 
-- [🧹 数据异常识别与处理模块（data_preprocessing）](./data_preprocessing/README.md)  
+- [🧹 异常识别与处理模块（data_preprocessing）](./data_preprocessing/README.md)  
   ➤ 基于滑动中位数与 MAD 方法进行数据异常识别与插值处理。
 
 - [📉 趋势分析模块（trend_analysis）](./trend_analysis/README.md)  
