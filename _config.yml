@@ -1,0 +1,18 @@
+title: "生命线平台技术文档"
+description: "城市生命线安全工程监测平台桥梁专项数据分析与预警模型"
+remote_theme: just-the-docs/just-the-docs
+plugins:
+  - jekyll-remote-theme
+
+search_enabled: true
+
+# 自动展开左侧导航的排序方式（按字母或手动排序）
+nav_sort: case_sensitive
+
+# 添加项目主页链接
+aux_links:
+  项目主页: https://github.com/lifeline_tech_center/lifeline_bridge_project_docs
+
+# 页面底部显示最近编辑时间（需 git 提交记录支持）
+last_edit_timestamp: true
+last_edit_time_format: "%Y-%m-%d"
