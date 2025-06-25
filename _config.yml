@@ -16,3 +16,8 @@ aux_links:
 # 页面底部显示最近编辑时间（需 git 提交记录支持）
 last_edit_timestamp: true
 last_edit_time_format: "%Y-%m-%d"
+
+# 新增自定义字段
+version: "v0.2.0"
+author: "Tugang Xiao"
+organization: "城市生命线安全工程技术研究中心"

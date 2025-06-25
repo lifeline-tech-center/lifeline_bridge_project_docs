@@ -1,7 +1,15 @@
 ---
 layout: home
-title: 🏗️ 生命线平台-桥梁专项模型开发文档
+title: 🏗️ 生命线平台-桥梁专项技术文档
 nav_order: 1
+---
+
+## 版本信息
+
+> - **版本号**：{{ site.version }}  
+> - **作者**：{{ site.author }}  
+> - **组织**：{{ site.organization }}
+
 ---
 
 # 📚 生命线平台-桥梁专项技术文档索引
@@ -30,7 +38,7 @@ nav_order: 1
   ➤ 对桥梁加速度数据进行单通道频谱分析、多时段频谱分析、多设备频谱分析和滤波分析等。
 
 - [🧠 自动模态频率识别模块（autossi）](./autossi/README.md)  
-  ➤ 利用SSI和聚类算法自动提取模态频率。
+  ➤ 利用 SSI 和聚类算法自动提取模态频率。
 
 - [🔗 相关性分析模块（correlation_analysis）](./correlation_analysis/README.md)  
   ➤ 分析结构响应与环境因素之间的相关性。
@@ -48,7 +56,7 @@ nav_order: 1
 
 ## 🚨 预警模型
 
-用于实现关键结构指标的动态监测与预警。
+用于实现关键结构指标或突发事件的动态预警。
 
 - [🧱 支座脱空预警模块（bearing_alert）](./bearing_alert/README.md)  
   ➤ 判断支座反力变化是否超出正常范围，识别脱空风险。
